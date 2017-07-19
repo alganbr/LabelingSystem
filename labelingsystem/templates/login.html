@@ -1,0 +1,55 @@
+{% extends "base_head.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/login-signup.css' %}">
+{% endblock style %}
+
+{% block body %}
+<body>
+  <div class="container">
+    <div class="middlePage">
+
+      <div class="page-header">
+        <h1 class="logo">UCIPT <small>Labeling System</small></h1>
+      </div>
+
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">Please Sign In</h3>
+        </div>
+        <div class="panel-body">
+
+          <div class="row">
+
+            <div class="col-md-5" >
+              <a class="btn btn-block btn-primary btn-social btn-facebook">
+                <span class="fa fa-facebook"></span> Sign in with Facebook
+              </a>
+              <a class="btn btn-block btn-info btn-social btn-twitter">
+                <span class="fa fa-twitter"></span> Sign in with Twitter
+              </a>
+              <a class="btn btn-block btn-danger btn-social btn-google">
+                <span class="fa fa-google"></span> Sign in with Google
+              </a>
+            </div>
+
+            <div class="col-md-7" style="border-left:1px solid #ccc;height:auto">
+              <form method="POST">
+                {% crispy form %}
+                <div class="spacing"><small>Don't have an account? </small><a href="{% url 'signup' %}" ><small>Register</small></a><br/></div>
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+{% endblock body %}
+
