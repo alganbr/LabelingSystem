@@ -45,6 +45,7 @@ ul {
 {
   z-index: 1000;
   position: fixed;
+  margin-top: -10px;
   left: 250px;
   width: 0;
   height: 100%;
