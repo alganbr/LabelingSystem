@@ -1,0 +1,29 @@
+{% extends "response/response_base.html" %}
+
+{% block response_content %}
+	<div class="container-fluid">
+		<h3>Response Detail:</h3>
+		<p>User: {{ quiz_response.user }}</p>
+		<p>Score: {{ quiz_response.score }}</p>
+		<table class="table table-striped" style="table-layout: fixed">
+            <thead>
+                <tr class="table-head">
+                    <th>Question</th>
+                    <th>Correct</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for question_response in question_response_list %}
+                    <tr>
+                        <td>{{ question_response.question }}</td>
+                        {% if question_response.correct %}
+                        	<td><span class="glyphicon glyphicon-ok"></span></td>
+                        {% else %}
+                        	<td><span class="glyphicon glyphicon-remove"></span></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+    	</table>
+	</div>
+{% endblock response_content %}

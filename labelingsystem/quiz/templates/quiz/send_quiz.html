@@ -1,0 +1,12 @@
+{% extends "quiz/quiz_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block quiz_content %}
+	<div class="container-fluid">
+		<h1>Send Quiz</h1>
+		<form method="POST">
+			{% crispy form %}
+		</form>
+	</div>
+{% endblock quiz_content %}

@@ -1,0 +1,12 @@
+{% extends "category/category_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block category_content %}
+	<div class="container-fluid">
+		<h1>Create Category</h1>
+		<form method="POST">
+			{% crispy form %}
+		</form>
+	</div>
+{% endblock category_content %}

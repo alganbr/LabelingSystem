@@ -1,0 +1,1 @@
+python manage.py makemigrations profile category question answer quiz response

@@ -1,0 +1,17 @@
+{% extends "question/question_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block question_content %}
+	<div class="container-fluid">
+		<h1>Create Question</h1>
+		<form method="POST">
+			{% crispy form %}
+			{{ answer_list.management_form }}
+			{% crispy answer_list helper %}
+			<div class="form-actions">
+				<input class="btn btn-info btn-sm pull_bottom pull-right" type="submit" value="Submit">
+			</div>
+		</form>
+	</div>
+{% endblock question_content %}
