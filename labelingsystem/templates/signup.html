@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/login-signup.css' %}">
 {% endblock head_style %}
 
-{% block content %}
+{% block body %}
 <body>
   <div class="container">
     <div class="middlePage">
@@ -16,7 +16,7 @@
         <h1 class="logo">UCIPT <small>Labeling System</small></h1>
       </div>
 
-      <div class="panel panel-info">
+      <div class="panel panel-info" style="margin-bottom: 100px">
         <div class="panel-heading">
           <h3 class="panel-title">Register</h3>
         </div>
@@ -24,7 +24,7 @@
 
           <div class="row">
 
-            <div class="col-md-12" style="height:auto">
+            <div class="col-md-12">
               <form method="POST">
                 {% crispy form %}
                 <div class="spacing"><small>Already have an account? </small><a href="{% url 'login' %}"><small>Sign In</small></a><br/></div>
@@ -39,5 +39,5 @@
     </div>
   </div>
 </body>
-{% endblock content %}
+{% endblock body %}
 

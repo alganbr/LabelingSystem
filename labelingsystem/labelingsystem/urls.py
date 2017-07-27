@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', auth_views.LoginView.as_view(template_name='login.html', redirect_field_name='home', form_class=forms.LoginForm, redirect_authenticated_user=True), name='login'),
     url(r'^login$', auth_views.LoginView.as_view(template_name='login.html', redirect_field_name='home', form_class=forms.LoginForm, redirect_authenticated_user=True), name='login'),
-    url(r'^signup/$', views.SignUp.as_view(), name='signup'),
+    url(r'^signup/$', views.SignUpView.as_view(), name='signup'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^home/$', views.HomePage.as_view(), name='home'),
     url(r'^profile/', include('profile.urls', namespace='profile')),
