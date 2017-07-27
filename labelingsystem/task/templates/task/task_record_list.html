@@ -1,8 +1,8 @@
-{% extends "quiz/quiz_base.html" %}
+{% extends "task/task_base.html" %}
 
-{% block quiz_content %}
+{% block task_content %}
 <div class="container-fluid">
-	<h1>Quiz Record List</h1>
+	<h1>Task Record List</h1>
 	<nav class="navbar navbar-default query" role="query">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -35,17 +35,17 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for quiz_record in quiz_record_list %}
+				{% for task_record in task_record_list %}
 				<tr>
-					<td>{{ quiz_record.title }}</td>
-					<td>{{ quiz_record.category }}</td>
-					<td>{{ quiz_record.description }}</td>
-					{% if quiz_record.quiz in completed_quiz_list %}
+					<td>{{ task_record.title }}</td>
+					<td>{{ task_record.category }}</td>
+					<td>{{ task_record.description }}</td>
+					{% if task_record.task in completed_task_list %}
 					<td>Yes</td>
 					{% else %}
 					<td>No</td>
 					{% endif %}
-					<td>{{ quiz_record.score }}</td>
+					<td>{{ task_record.score }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -61,4 +61,4 @@
         <li><a href="#">»</a></li>
     </ul>
 </div>
-{% endblock quiz_content %}
+{% endblock task_content %}
