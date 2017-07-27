@@ -5,8 +5,11 @@ from django.shortcuts import render
 from django.views.generic import FormView
 
 from .models import Question
-from .forms import CreateQuestionForm
+from answer.models import Answer
+from .forms import CreateQuestionForm, UploadQuestionForm
 from answer.forms import AnswerFormSet, AnswerFormSetHelper
+
+import csv
 
 # Create your views here.
 class CreateQuestionView(FormView):
@@ -34,3 +37,36 @@ class CreateQuestionView(FormView):
             answer_list.save()
 
         return super(CreateQuestionView, self).form_valid(form)
+
+class UploadQuestionView(FormView):
+    model = Question
+    template_name = 'question/upload_question.html'
+    success_url = '/quiz/create_quiz/'
+    form_class = UploadQuestionForm
+
+    def form_valid(self, form):
+        form = UploadQuestionForm(self.request.POST, self.request.FILES)
+        self.parse_file(self.request.FILES['file'], self.request.user)
+        return super(UploadQuestionView, self).form_valid(form)
+
+    def parse_file(self, file, user):
+        try:
+            reader = csv.reader(file)
+
+            # read question_content, answer_content
+            for line in reader:
+                question_content = line[0]
+                answer_content = line[1]
+
+                question = Question.objects.create(
+                    content = question_content)
+
+                answer = Answer.objects.create(
+                    question = question,
+                    content = answer_content,
+                    correct = True)
+
+        except Exception, e:
+            print("Fail parsing quiz file.")
+            print(e)
+            Exception(e)

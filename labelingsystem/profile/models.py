@@ -7,7 +7,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from quiz.models import Quiz
-from response.models import QuizResponse
+from task.models import Task
+from response.models import QuizResponse, TaskResponse
 
 # Create your models here.
 class Profile(models.Model):
@@ -32,6 +33,18 @@ class Profile(models.Model):
 		QuizResponse,
 		verbose_name = "quiz_response_list",
 		related_name = "quiz_response_list",
+		blank = True)
+
+	task_list = models.ManyToManyField(
+		Task,
+		verbose_name = "task_list",
+		related_name = "task_list",
+		blank = True)
+
+	task_response_list = models.ManyToManyField(
+		TaskResponse,
+		verbose_name = "task_response_list",
+		related_name = "task_response_list",
 		blank = True)
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

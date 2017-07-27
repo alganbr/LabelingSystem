@@ -9,6 +9,10 @@ from .models import Quiz, Question
 from .forms import CreateQuizForm, SendQuizForm
 from category.models import Category
 from profile.models import Profile
+from response.models import QuizResponse
+from category.forms import CreateCategoryForm
+from question.forms import CreateQuestionForm, UploadQuestionForm
+from answer.forms import AnswerFormSet, AnswerFormSetHelper
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -19,6 +23,15 @@ class CreateQuizView(FormView):
     template_name = 'quiz/create_quiz.html'
     success_url = '/quiz/create_quiz'
     form_class = CreateQuizForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateQuizView, self).get_context_data(**kwargs)
+        context["category_form"] = CreateCategoryForm
+        context["question_form"] = CreateQuestionForm
+        context["answer_list"] = AnswerFormSet()
+        context["helper"] = AnswerFormSetHelper()
+        context["upload_question_form"] = UploadQuestionForm
+        return context
 
     def form_valid(self, form):
         quiz = form.save(commit=False)
@@ -38,7 +51,6 @@ class MyQuizListView(ListView):
 
     def get_completed_quizzes(self):
         user = self.request.user
-        completed_quiz_list = user.profile.quiz_response_list.filter()
         completed_quiz_list = []
         for quiz_response in user.profile.quiz_response_list.all():
             if quiz_response.score > quiz_response.quiz.pass_mark:
@@ -54,7 +66,7 @@ class MyQuizListView(ListView):
 class TakeQuizView(ListView):
     model = Question
     template_name = 'quiz/take_quiz.html'
-    success_url = '/quiz/my_quiz_list.html'
+    success_url = '/quiz/my_quiz_list'
 
     def dispatch(self, request, *args, **kwargs):
         self.quiz = get_object_or_404(Quiz, pk=self.kwargs['pk'])
@@ -99,6 +111,32 @@ class SendQuizView(FormView):
         receiver = form.cleaned_data['send_to']
         receiver.profile.quiz_list.add(self.quiz)
         return super(SendQuizView, self).form_valid(form)
+
+class QuizRecordListView(ListView):
+    model = QuizResponse
+    template_name = 'quiz/quiz_record_list.html'
+    success_url = '/quiz/quiz_record_list'
+
+    def get_queryset(self):
+        user = self.request.user
+        self.quiz_record_list = user.profile.quiz_response_list.all()
+        return self.quiz_record_list.all()
+
+    def get_completed_quizzes(self):
+        user = self.request.user
+        completed_quiz_list = user.profile.quiz_response_list.filter()
+        completed_quiz_list = []
+        for quiz_response in user.profile.quiz_response_list.all():
+            if quiz_response.score > quiz_response.quiz.pass_mark:
+                completed_quiz_list.append(quiz_response.quiz)
+        return completed_quiz_list
+
+    def get_context_data(self, **kwargs):
+        context = super(QuizRecordListView, self).get_context_data(**kwargs)
+        context["quiz_record_list"] = self.quiz_record_list
+        context["completed_quiz_list"] = self.get_completed_quizzes()
+        return context
+
 
 
 

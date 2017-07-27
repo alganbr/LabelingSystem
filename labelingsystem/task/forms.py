@@ -6,20 +6,20 @@ from crispy_forms.bootstrap import FieldWithButtons, StrictButton
 
 from .models import *
 
-class CreateQuizForm(forms.ModelForm):
+class CreateTaskForm(forms.ModelForm):
     class Meta:
-        model = Quiz
+        model = Task
         fields = '__all__'
         exclude = ['creator']
 
     def __init__(self, *args, **kwargs):
-        super(CreateQuizForm, self).__init__(*args, **kwargs)
+        super(CreateTaskForm, self).__init__(*args, **kwargs)
         self.fields["upload_question"] = forms.FileField()
 
         self.helper = FormHelper()
-        self.helper.form_id = "create_quiz_form"
+        self.helper.form_id = "create_task_form"
         self.helper.form_method = "POST"
-        self.helper.form_action = "/quiz/create_quiz/"
+        self.helper.form_action = "/task/create_task/"
         self.helper.layout = Layout(
             Field('title'),
             Field('description'),
@@ -31,21 +31,21 @@ class CreateQuizForm(forms.ModelForm):
             FieldWithButtons('question_list', StrictButton("""<span class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#question_modal"></span>""", css_class="btn btn-info btn-sm")),
             StrictButton("""<span class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#upload_question_modal"> Upload Questions</span>""", css_class="btn btn-warning btn-sm"),
         )
-        self.helper.add_input(Submit('create_quiz_submit', 'Submit', css_class='btn btn-info btn-sm pull-right'))
+        self.helper.add_input(Submit('create_task_submit', 'Submit', css_class='btn btn-info btn-sm pull-right'))
 
-class SendQuizForm(forms.Form):
+class SendTaskForm(forms.Form):
     send_to = forms.ModelChoiceField(User.objects.all(), label="Send To")
 
     def __init__(self, *args, **kwargs):
-        super(SendQuizForm, self).__init__(*args, **kwargs)
+        super(SendTaskForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn btn-info btn-sm pull-right'))
 
-class TakeQuizForm(forms.Form):
+class TakeTaskForm(forms.Form):
 
 	def __init__(self, *args, **kwargs):
-		super(TakeQuizForm, self).__init__(*args, **kwargs)
+		super(TakeTaskForm, self).__init__(*args, **kwargs)
 
 		self.helper = FormHelper()
 		self.helper.add_input(Submit('submit', 'Submit', css_class='btn btn-info btn-sm pull-right'))

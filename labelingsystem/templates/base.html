@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 {% extends "base_head.html" %}
 
 {% load static %}
@@ -42,6 +43,7 @@
 						</form>
 					</div>
 					<ul class="navbar-form navbar-right">
+						<a href="{% url 'profile:profile_detail' user.username %}"> Hello, {{ user.username }}               </a>
 						<a href="{% url 'logout' %}" class="btn btn-info">Logout</a>
 					</ul>
 				</div>
@@ -65,7 +67,7 @@
 						<a href="#quiz-sidebar" class="dropdown-toggle" data-toggle="collapse">Quiz <span class="caret"></span></a>
 						<ul id="quiz-sidebar" class="collapse" role="menu">
 							<li><a href="{% url 'quiz:my_quiz_list' %}">My Quizzes</a></li>
-							<li><a href="#">Quiz Records</a></li>
+							<li><a href="{% url 'quiz:quiz_record_list' %}">Quiz Records</a></li>
 						</ul>
 					</li>
 
@@ -73,8 +75,8 @@
 					<li class="dropdown">
 						<a href="#task-sidebar" class="dropdown-toggle" data-toggle="collapse">Task <span class="caret"></span></a>
 						<ul id="task-sidebar" class="collapse" role="menu">
-							<li><a href="#">My Tasks</a></li>
-							<li><a href="#">Task Records</a></li>
+							<li><a href="{% url 'task:my_task_list' %}">My Tasks</a></li>
+							<li><a href="{% url 'task:task_record_list' %}">Task Records</a></li>
 						</ul>
 					</li>
 
@@ -83,12 +85,48 @@
 					<li class="dropdown">
 						<a href="#admin-sidebar" class="dropdown-toggle" data-toggle="collapse">Admin <span class="caret"></span></a>
 						<ul id="admin-sidebar" class="collapse" role="menu">
-							<li><a href="{% url 'category:create_category' %}">Create Category</a></li>
-							<li><a href="{% url 'question:create_question' %}">Create Question</a></li>
-							<li><a href="{% url 'quiz:create_quiz' %}">Create Quiz</a></li>
-							<li><a href="{% url 'quiz:owned_quiz_list' %}">Owned Quizzes</a></li>
-							<li><a href="#">Create Task</a></li>
-							<li><a href="{% url 'response:quiz_response_list' %}">Quiz Response List</a></li>
+
+							<li class="divider"></li>
+							<li class="dropdown">
+								<a href="#admin-category-sidebar" class="dropdown-toggle" data-toggle="collapse">Category <span class="caret"></span></a>
+								<ul id="admin-category-sidebar" class="collapse" role="menu">
+									<li><a href="{% url 'category:create_category' %}">Create Category</a></li>
+								</ul>
+							</li>
+
+							<li class="divider"></li>
+							<li class="dropdown">
+								<a href="#admin-question-sidebar" class="dropdown-toggle" data-toggle="collapse">Question <span class="caret"></span></a>
+								<ul id="admin-question-sidebar" class="collapse" role="menu">
+									<li><a href="{% url 'question:create_question' %}">Create Question</a></li>
+								</ul>
+							</li>
+
+							<li class="divider"></li>
+							<li class="dropdown">
+								<a href="#admin-quiz-sidebar" class="dropdown-toggle" data-toggle="collapse">Quiz <span class="caret"></span></a>
+								<ul id="admin-quiz-sidebar" class="collapse" role="menu">
+									<li><a href="{% url 'quiz:create_quiz' %}">Create Quiz</a></li>
+									<li><a href="{% url 'quiz:owned_quiz_list' %}">Owned Quiz List</a></li>
+								</ul>
+							</li>
+
+							<li class="divider"></li>
+							<li class="dropdown">
+								<a href="#admin-task-sidebar" class="dropdown-toggle" data-toggle="collapse">Task <span class="caret"></span></a>
+								<ul id="admin-task-sidebar" class="collapse" role="menu">
+									<li><a href="{% url 'task:create_task' %}">Create Task</a></li>
+									<li><a href="{% url 'task:owned_task_list' %}">Owned Task List</a></li>
+								</ul>
+							</li>
+
+							<li class="divider"></li>
+							<li class="dropdown">
+								<a href="#admin-response-sidebar" class="dropdown-toggle" data-toggle="collapse">Response <span class="caret"></span></a>
+								<ul id="admin-response-sidebar" class="collapse" role="menu">
+									<li><a href="{% url 'response:quiz_response_list' %}">Response List</a></li>
+								</ul>
+							</li>
 						</ul>
 					</li>
 					{% endif %}

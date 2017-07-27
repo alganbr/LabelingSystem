@@ -14,4 +14,7 @@ class CreateCategoryForm(forms.ModelForm):
         super(CreateCategoryForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
-        self.helper.add_input(Submit('submit', 'Submit', css_class='btn btn-info btn-sm pull-right'))
+        self.helper.form_id = "create_category_form"
+        self.helper.form_method = "POST"
+        self.helper.form_action = "/category/create_category/"
+        self.helper.add_input(Submit('create_category_submit', 'Submit', css_class='btn btn-info btn-sm pull-right'))

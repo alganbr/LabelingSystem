@@ -2,7 +2,7 @@
 
 {% block quiz_content %}
 <div class="container-fluid">
-	<h1>My Quiz List</h1>
+	<h1>Quiz Record List</h1>
 	<nav class="navbar navbar-default query" role="query">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -31,19 +31,21 @@
 					<th>Category</th>
 					<th>Description</th>
 					<th>Completed</th>
+					<th>Score</th>
 				</tr>
 			</thead>
 			<tbody>
-				{% for quiz in quiz_list %}
+				{% for quiz_record in quiz_record_list %}
 				<tr>
-					<td><a href="{% url 'quiz:take_quiz' quiz.id %}">{{ quiz.title }}</a> </td>
-					<td>{{ quiz.category }}</td>
-					<td>{{ quiz.description }}</td>
-					{% if quiz in completed_quiz_list %}
+					<td>{{ quiz_record.title }}</td>
+					<td>{{ quiz_record.category }}</td>
+					<td>{{ quiz_record.description }}</td>
+					{% if quiz_record.quiz in completed_quiz_list %}
 					<td>Yes</td>
 					{% else %}
 					<td>No</td>
 					{% endif %}
+					<td>{{ quiz_record.score }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>

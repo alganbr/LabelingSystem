@@ -1,10 +1,10 @@
-{% extends "quiz/quiz_base.html" %}
+{% extends "task/task_base.html" %}
 
 {% load crispy_forms_tags %}
 
-{% block quiz_content %}
+{% block task_content %}
 	<div class="container-fluid">
-		<h1>Create Quiz</h1>
+		<h1>Create Task</h1>
 		{% crispy form %}
 	</div>
 
@@ -66,4 +66,4 @@
       </div>
     </div>
 
-{% endblock quiz_content %}
+{% endblock task_content %}

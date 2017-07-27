@@ -1,0 +1,12 @@
+{% extends "task/task_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block task_content %}
+	<div class="container-fluid">
+		<h1>Send Task</h1>
+		<form method="POST">
+			{% crispy form %}
+		</form>
+	</div>
+{% endblock task_content %}

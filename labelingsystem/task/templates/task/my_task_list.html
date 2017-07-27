@@ -1,8 +1,8 @@
-{% extends "quiz/quiz_base.html" %}
+{% extends "task/task_base.html" %}
 
-{% block quiz_content %}
+{% block task_content %}
 <div class="container-fluid">
-	<h1>My Quiz List</h1>
+	<h1>My Task List</h1>
 	<nav class="navbar navbar-default query" role="query">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -34,12 +34,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for quiz in quiz_list %}
+				{% for task in task_list %}
 				<tr>
-					<td><a href="{% url 'quiz:take_quiz' quiz.id %}">{{ quiz.title }}</a> </td>
-					<td>{{ quiz.category }}</td>
-					<td>{{ quiz.description }}</td>
-					{% if quiz in completed_quiz_list %}
+					<td><a href="{% url 'task:take_task' task.id %}">{{ task.title }}</a> </td>
+					<td>{{ task.category }}</td>
+					<td>{{ task.description }}</td>
+					{% if task in completed_task_list %}
 					<td>Yes</td>
 					{% else %}
 					<td>No</td>
@@ -59,4 +59,4 @@
         <li><a href="#">»</a></li>
     </ul>
 </div>
-{% endblock quiz_content %}
+{% endblock task_content %}

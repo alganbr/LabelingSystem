@@ -35,4 +35,5 @@ urlpatterns = [
     url(r'^question/', include('question.urls', namespace='question')),
     url(r'^answer/', include('answer.urls', namespace='answer')),
     url(r'^response/', include('response.urls', namespace='response')),
+    url(r'^task/', include('task.urls', namespace='task')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

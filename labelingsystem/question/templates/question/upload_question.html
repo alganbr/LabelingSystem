@@ -1,0 +1,10 @@
+{% extends "question/question_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block question_content %}
+	<div class="container-fluid">
+		<h1>Create Question</h1>
+		{% crispy form %}
+	</div>
+{% endblock question_content %}
