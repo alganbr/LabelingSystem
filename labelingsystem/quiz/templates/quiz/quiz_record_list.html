@@ -32,20 +32,22 @@
 					<th>Description</th>
 					<th>Completed</th>
 					<th>Score</th>
+					<th>Created At</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for quiz_record in quiz_record_list %}
 				<tr>
-					<td>{{ quiz_record.title }}</td>
-					<td>{{ quiz_record.category }}</td>
-					<td>{{ quiz_record.description }}</td>
+					<td>{{ quiz_record.quiz.title }}</td>
+					<td>{{ quiz_record.quiz.category }}</td>
+					<td>{{ quiz_record.quiz.description }}</td>
 					{% if quiz_record.quiz in completed_quiz_list %}
 					<td>Yes</td>
 					{% else %}
 					<td>No</td>
 					{% endif %}
 					<td>{{ quiz_record.score }}</td>
+					<td>{{ quiz_record.created_at }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>

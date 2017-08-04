@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, FormView
 
+import random
+
 from .models import Quiz, Question
 from .forms import CreateQuizForm, SendQuizForm
 from category.models import Category
@@ -51,8 +53,9 @@ class MyQuizListView(ListView):
 
     def get_completed_quizzes(self):
         user = self.request.user
+        quiz_response_list = QuizResponse.objects.filter(user=user)
         completed_quiz_list = []
-        for quiz_response in user.profile.quiz_response_list.all():
+        for quiz_response in quiz_response_list:
             if quiz_response.score > quiz_response.quiz.pass_mark:
                 completed_quiz_list.append(quiz_response.quiz)
         return completed_quiz_list
@@ -75,7 +78,16 @@ class TakeQuizView(ListView):
     def get_context_data(self, **kwargs):
         context = super(TakeQuizView, self).get_context_data(**kwargs)
         context["quiz"] = self.quiz
-        context["question_list"] = self.quiz.question_list.all()
+        question_list = list(self.quiz.question_list.all())
+
+        if self.quiz.random_order is True:
+            random.shuffle(question_list)
+
+        if self.quiz.max_questions and (self.quiz.max_questions < len(question_list)):
+            question_list = question_list[:self.quiz.max_questions]
+
+        context["question_list"] = question_list
+
         return context
 
 class OwnedQuizListView(ListView):
@@ -95,21 +107,30 @@ class OwnedQuizListView(ListView):
 class SendQuizView(FormView):
     model = Quiz
     template_name = 'quiz/send_quiz.html'
-    success_url = '/quiz/owned_quiz_list'
+    success_url = '/quiz/send_quiz'
     form_class = SendQuizForm
 
     def dispatch(self, request, *args, **kwargs):
-        self.quiz = get_object_or_404(Quiz, pk=self.kwargs['pk'])
+        quiz_string = request.GET.get('ids')
+        try:
+            self.quiz_list = quiz_string.split(',')
+        except:
+            self.quiz_list = []
+
         return super(SendQuizView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(SendQuizView, self).get_context_data(**kwargs)
-        context["quiz"] = self.quiz
+        context["quiz_list"] = self.quiz_list
         return context
 
     def form_valid(self, form):
         receiver = form.cleaned_data['send_to']
-        receiver.profile.quiz_list.add(self.quiz)
+        for quiz in self.quiz_list:
+            try:
+                receiver.profile.quiz_list.add(quiz)
+            except:
+                pass
         return super(SendQuizView, self).form_valid(form)
 
 class QuizRecordListView(ListView):
@@ -119,14 +140,13 @@ class QuizRecordListView(ListView):
 
     def get_queryset(self):
         user = self.request.user
-        self.quiz_record_list = user.profile.quiz_response_list.all()
+        self.quiz_record_list = QuizResponse.objects.filter(user=user).order_by('-created_at')
         return self.quiz_record_list.all()
 
     def get_completed_quizzes(self):
         user = self.request.user
-        completed_quiz_list = user.profile.quiz_response_list.filter()
         completed_quiz_list = []
-        for quiz_response in user.profile.quiz_response_list.all():
+        for quiz_response in self.quiz_record_list:
             if quiz_response.score > quiz_response.quiz.pass_mark:
                 completed_quiz_list.append(quiz_response.quiz)
         return completed_quiz_list

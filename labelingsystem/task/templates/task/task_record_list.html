@@ -40,11 +40,6 @@
 					<td>{{ task_record.title }}</td>
 					<td>{{ task_record.category }}</td>
 					<td>{{ task_record.description }}</td>
-					{% if task_record.task in completed_task_list %}
-					<td>Yes</td>
-					{% else %}
-					<td>No</td>
-					{% endif %}
 					<td>{{ task_record.score }}</td>
 				</tr>
 				{% endfor %}

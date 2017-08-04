@@ -49,15 +49,9 @@ class MyTaskListView(ListView):
         self.task_list = user.profile.task_list.all()
         return self.task_list.all()
 
-    def get_completed_tasks(self):
-        user = self.request.user
-        completed_task_list = user.profile.task_response_list.all()
-        return completed_task_list
-
     def get_context_data(self, **kwargs):
         context = super(MyTaskListView, self).get_context_data(**kwargs)
         context["task_list"] = self.task_list 
-        context["completed_task_list"] = self.get_completed_tasks()
         return context
 
 class TakeTaskView(ListView):
@@ -118,15 +112,6 @@ class TaskRecordListView(ListView):
         user = self.request.user
         self.task_record_list = user.profile.task_response_list.all()
         return self.task_record_list.all()
-
-    def get_completed_taskzes(self):
-        user = self.request.user
-        completed_task_list = user.profile.task_response_list.filter()
-        completed_task_list = []
-        for task_response in user.profile.task_response_list.all():
-            if task_response.score > task_response.task.pass_mark:
-                completed_task_list.append(task_response.task)
-        return completed_task_list
 
     def get_context_data(self, **kwargs):
         context = super(TaskRecordListView, self).get_context_data(**kwargs)

@@ -15,7 +15,7 @@ class QuizResponse(models.Model):
 	score = models.PositiveIntegerField(default=0)
 
 	def __unicode__(self):
-		return "user: " + str(self.user.username) + "; quiz: " + str(self.quiz.title)
+		return "Quiz response {0}".format(self.pk)
 
 class TaskResponse(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
@@ -24,15 +24,24 @@ class TaskResponse(models.Model):
 	score = models.PositiveIntegerField(default=0)
 
 	def __unicode__(self):
-		return "user: " + str(self.user.username) + "; quiz: " + str(self.task.title)
+		return "Task response {0}".format(self.pk)
 
-class QuestionResponse(models.Model):
+class QuizQuestionResponse(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL)
 	question = models.ForeignKey(Question)
 	correct = models.BooleanField(default=False)
-	quiz_response = models.ManyToManyField(QuizResponse, blank=True)
-	task_response = models.ManyToManyField(TaskResponse, blank=True)
+	quiz_response = models.ForeignKey(QuizResponse)
 
 	def __unicode__(self):
-		return "user: " + str(self.user.username) + "; question: " + str(self.question.content)
+		return "Quiz Question response {0}".format(self.pk)
+
+class TaskQuestionResponse(models.Model):
+	created_at = models.DateTimeField(auto_now_add=True)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL)
+	question = models.ForeignKey(Question)
+	correct = models.BooleanField(default=False)
+	task_response = models.ForeignKey(TaskResponse)
+
+	def __unicode__(self):
+		return "Task Question response {0}".format(self.pk)

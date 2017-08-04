@@ -18,7 +18,7 @@
 						{% for answer in question.answer_set.all %}
 						<tr>
 							<td width="20%"> {{ answer }} </td>
-							<td width="80%"><input type="radio" name="question_{{ question.id }}" value="{{ answer.correct }}"></td>
+							<td width="80%"><input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}"></td>
 						</tr>
 						{% endfor %}
 						</tbody>

@@ -14,7 +14,7 @@ class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
     verbose_name_plural = 'profiles'
-    filter_horizontal = ('quiz_list', )
+    filter_horizontal = ('quiz_list', 'task_list', )
 
 # Define a new User admin
 class UserAdmin(BaseUserAdmin):

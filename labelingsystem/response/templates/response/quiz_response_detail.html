@@ -1,11 +1,24 @@
-{% extends "response/response_base.html" %}
+{% extends "admin/base_site.html" %}
 
-{% block response_content %}
-	<div class="container-fluid">
-		<h3>Response Detail:</h3>
-		<p>User: {{ quiz_response.user }}</p>
-		<p>Score: {{ quiz_response.score }}</p>
-		<table class="table table-striped" style="table-layout: fixed">
+{% load i18n admin_urls static admin_list %}
+
+{% load crispy_forms_tags %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="/admin/response">Response</a>
+&rsaquo; <a href="/admin/response/quizresponse">Quiz responses</a>
+&rsaquo; Quiz response detail
+</div>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <h3>Response Detail:</h3>
+        <p>User: {{ quiz_response.user }}</p>
+        <p>Score: {{ quiz_response.score }}</p>
+        <table class="table table-striped" style="table-layout: fixed">
             <thead>
                 <tr class="table-head">
                     <th>Question</th>
@@ -17,13 +30,13 @@
                     <tr>
                         <td>{{ question_response.question }}</td>
                         {% if question_response.correct %}
-                        	<td><span class="glyphicon glyphicon-ok"></span></td>
+                            <td><span class="glyphicon glyphicon-ok"></span></td>
                         {% else %}
-                        	<td><span class="glyphicon glyphicon-remove"></span></td>
+                            <td><span class="glyphicon glyphicon-remove"></span></td>
                         {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>
-    	</table>
-	</div>
-{% endblock response_content %}
+        </table>
+    </div>
+{% endblock content %}

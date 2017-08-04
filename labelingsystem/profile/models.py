@@ -29,22 +29,10 @@ class Profile(models.Model):
 		related_name = "quiz_list",
 		blank = True)
 
-	quiz_response_list = models.ManyToManyField(
-		QuizResponse,
-		verbose_name = "quiz_response_list",
-		related_name = "quiz_response_list",
-		blank = True)
-
 	task_list = models.ManyToManyField(
 		Task,
 		verbose_name = "task_list",
 		related_name = "task_list",
-		blank = True)
-
-	task_response_list = models.ManyToManyField(
-		TaskResponse,
-		verbose_name = "task_response_list",
-		related_name = "task_response_list",
 		blank = True)
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

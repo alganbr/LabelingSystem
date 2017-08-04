@@ -39,11 +39,6 @@
 					<td><a href="{% url 'task:take_task' task.id %}">{{ task.title }}</a> </td>
 					<td>{{ task.category }}</td>
 					<td>{{ task.description }}</td>
-					{% if task in completed_task_list %}
-					<td>Yes</td>
-					{% else %}
-					<td>No</td>
-					{% endif %}
 				</tr>
 				{% endfor %}
 			</tbody>

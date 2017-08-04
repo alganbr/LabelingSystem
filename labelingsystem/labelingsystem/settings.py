@@ -35,6 +35,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_view_permission', #https://media.readthedocs.org/pdf/django-admin-view-permission/latest/django-admin-view-permission.pdf
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'category',
     'crispy_forms',
+    'labelingsystem',
     'profile',
     'question',
     'quiz',

@@ -19,10 +19,14 @@ from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.conf import settings
 
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic.base import RedirectView
+
 from . import views
 from . import forms
 
 urlpatterns = [
+    url(r'^admin/login/$', RedirectView.as_view(url=reverse_lazy('login'))),
     url(r'^admin/', admin.site.urls),
     url(r'^$', auth_views.LoginView.as_view(template_name='login.html', redirect_field_name='home', form_class=forms.LoginForm, redirect_authenticated_user=True), name='login'),
     url(r'^login$', auth_views.LoginView.as_view(template_name='login.html', redirect_field_name='home', form_class=forms.LoginForm, redirect_authenticated_user=True), name='login'),

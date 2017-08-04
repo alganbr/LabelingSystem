@@ -35,6 +35,7 @@ class CreateQuizForm(forms.ModelForm):
 
 class SendQuizForm(forms.Form):
     send_to = forms.ModelChoiceField(User.objects.all(), label="Send To")
+    # send_to = forms.ModelChoiceField(User.objects.all(), label="Send To", widget=forms.CheckboxSelectMultiple)
 
     def __init__(self, *args, **kwargs):
         super(SendQuizForm, self).__init__(*args, **kwargs)

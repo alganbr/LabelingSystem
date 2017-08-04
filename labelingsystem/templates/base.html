@@ -83,51 +83,7 @@
 					{% if user.is_staff %}
 					<li class="divider"></li>
 					<li class="dropdown">
-						<a href="#admin-sidebar" class="dropdown-toggle" data-toggle="collapse">Admin <span class="caret"></span></a>
-						<ul id="admin-sidebar" class="collapse" role="menu">
-
-							<li class="divider"></li>
-							<li class="dropdown">
-								<a href="#admin-category-sidebar" class="dropdown-toggle" data-toggle="collapse">Category <span class="caret"></span></a>
-								<ul id="admin-category-sidebar" class="collapse" role="menu">
-									<li><a href="{% url 'category:create_category' %}">Create Category</a></li>
-								</ul>
-							</li>
-
-							<li class="divider"></li>
-							<li class="dropdown">
-								<a href="#admin-question-sidebar" class="dropdown-toggle" data-toggle="collapse">Question <span class="caret"></span></a>
-								<ul id="admin-question-sidebar" class="collapse" role="menu">
-									<li><a href="{% url 'question:create_question' %}">Create Question</a></li>
-								</ul>
-							</li>
-
-							<li class="divider"></li>
-							<li class="dropdown">
-								<a href="#admin-quiz-sidebar" class="dropdown-toggle" data-toggle="collapse">Quiz <span class="caret"></span></a>
-								<ul id="admin-quiz-sidebar" class="collapse" role="menu">
-									<li><a href="{% url 'quiz:create_quiz' %}">Create Quiz</a></li>
-									<li><a href="{% url 'quiz:owned_quiz_list' %}">Owned Quiz List</a></li>
-								</ul>
-							</li>
-
-							<li class="divider"></li>
-							<li class="dropdown">
-								<a href="#admin-task-sidebar" class="dropdown-toggle" data-toggle="collapse">Task <span class="caret"></span></a>
-								<ul id="admin-task-sidebar" class="collapse" role="menu">
-									<li><a href="{% url 'task:create_task' %}">Create Task</a></li>
-									<li><a href="{% url 'task:owned_task_list' %}">Owned Task List</a></li>
-								</ul>
-							</li>
-
-							<li class="divider"></li>
-							<li class="dropdown">
-								<a href="#admin-response-sidebar" class="dropdown-toggle" data-toggle="collapse">Response <span class="caret"></span></a>
-								<ul id="admin-response-sidebar" class="collapse" role="menu">
-									<li><a href="{% url 'response:quiz_response_list' %}">Response List</a></li>
-								</ul>
-							</li>
-						</ul>
+						<a class="dropdown-toggle" href="{% url 'admin:index' %}">Admin</a>
 					</li>
 					{% endif %}
 

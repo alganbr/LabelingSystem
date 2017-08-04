@@ -1,10 +1,21 @@
-{% extends "question/question_base.html" %}
+{% extends "admin/base_site.html" %}
+
+{% load i18n admin_urls static admin_list %}
 
 {% load crispy_forms_tags %}
 
-{% block question_content %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="/admin/question">Question</a>
+&rsaquo; <a href="/admin/question/question">Questions</a>
+&rsaquo; Upload Question
+</div>
+{% endblock %}
+
+{% block content %}
 	<div class="container-fluid">
-		<h1>Create Question</h1>
+		<h1>Upload Questions</h1>
 		{% crispy form %}
 	</div>
-{% endblock question_content %}
+{% endblock content %}

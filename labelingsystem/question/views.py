@@ -41,7 +41,7 @@ class CreateQuestionView(FormView):
 class UploadQuestionView(FormView):
     model = Question
     template_name = 'question/upload_question.html'
-    success_url = '/quiz/create_quiz/'
+    success_url = '/admin/question/question'
     form_class = UploadQuestionForm
 
     def form_valid(self, form):
@@ -51,16 +51,17 @@ class UploadQuestionView(FormView):
 
     def parse_file(self, file, user):
         try:
-            reader = csv.reader(file)
+            sep=b"|"
+            reader = csv.reader(file, delimiter=sep, skipinitialspace=True)
 
             # read question_content, answer_content
             for line in reader:
+                print(line)
                 question_content = line[0]
-                answer_content = line[1]
-
                 question = Question.objects.create(
                     content = question_content)
 
+                answer_content = line[1]
                 answer = Answer.objects.create(
                     question = question,
                     content = answer_content,
