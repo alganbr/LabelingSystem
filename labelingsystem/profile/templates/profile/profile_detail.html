@@ -1,5 +1,7 @@
 {% extends "profile/profile_base.html" %}
 
+{% load crispy_forms_tags %}
+
 {% load static %}
 
 {% block style %}
@@ -10,7 +12,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="profile">
-        {% if object.profile_pic %}
+        {% if user.profile.profile_pic %}
           <img align="left" class="image-profile thumbnail" src="{{ object.profile.profile_pic.url }}" alt="Profile picture"/>
         {% else %}
           <img align="left" class="image-profile thumbnail" src="{% static 'profile/img/default_user.png' %}" alt="Profile image example"/>
@@ -40,20 +42,75 @@
               <a href="#tab_default_3" data-toggle="tab">
              Friends</a>
             </li>
-             <li>
-              <a href="#tab_default_4" data-toggle="tab">
-             My Quizzes</a>
-            </li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab_default_1">
  
-              <h1>#TODO PROFILE</h1>
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-xs-2">
+                    Name
+                  </div>
+                  <div class="col-xs-10">
+                    : &nbsp {{ user.first_name }} {{ user.last_name }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-2">
+                    Email
+                  </div>
+                  <div class="col-xs-10">
+                    : &nbsp {{ user.email }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-2">
+                    Active Account
+                  </div>
+                  <div class="col-xs-10">
+                    : &nbsp {{ user.is_active }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-2">
+                    Admin Status
+                  </div>
+                  <div class="col-xs-10">
+                    : &nbsp {{ user.is_staff }}
+                  </div>
+                </div>
+                {% if user.is_staff %}
+                <div class="row">
+                  <div class="col-xs-2">
+                    Quiz Owned
+                  </div>
+                  <div class="col-xs-10">
+                    : &nbsp {{ user.profile.quiz_list.count }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-2">
+                    Task Owned
+                  </div>
+                  <div class="col-xs-10">
+                    : &nbsp {{ user.profile.task_list.count }}
+                  </div>
+                </div>
+                {% endif %}
+              </div>
            
             </div>
             <div class="tab-pane" id="tab_default_2">
               
-              <h1>#TODO EDIT PROFILE</h1>
+              <div class="container-fluid">
+                <form method="POST">
+                  {% crispy user_form %}
+                  {% crispy profile_form %}
+                  <div class="form-actions">
+                    <input class="btn btn-info btn-sm pull_bottom pull-right" type="submit" name="update_profile_submit" value="Submit">
+                  </div>
+                </form>
+              </div>
            
             </div>
             <div class="tab-pane" id="tab_default_3">
