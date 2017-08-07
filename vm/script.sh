@@ -12,7 +12,9 @@ pip install -r /home/vagrant/labelingsystem/requirements.txt
 # Create database and syncdb
 echo "ALTER USER postgres PASSWORD 'postgres'" | sudo -u postgres psql
 pushd /home/vagrant/labelingsystem
+./makemigrations.sh
 /usr/bin/python manage.py migrate
+/usr/bin/python manage.py generate_admin_group
 popd
 
 # Give everything in home folder back to vagrant user

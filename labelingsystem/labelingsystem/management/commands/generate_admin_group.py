@@ -13,7 +13,7 @@ from category.models import Category
 from profile.models import Profile
 from question.models import Question
 from quiz.models import Quiz
-from response.models import QuizResponse, QuizQuestionResponse
+from response.models import QuizResponse, TaskResponse
 from task.models import Task
 
 class Command(BaseCommand):
@@ -35,7 +35,7 @@ class Command(BaseCommand):
     	]
 
     	models_with_view_permission = [
-    		Answer, Category, LogEntry, Profile, Question, Quiz, QuizResponse, QuizQuestionResponse, Task, User
+    		Answer, Category, LogEntry, Profile, Question, Quiz, QuizResponse, Task, TaskResponse, User
     	]
 
     	for model in apps.get_models():

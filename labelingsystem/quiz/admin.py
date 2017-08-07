@@ -2,10 +2,11 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 from .models import *
+from category.models import Category
+from question.models import Question
 
 # Register your models here.
 
@@ -15,14 +16,21 @@ class QuizAdmin(admin.ModelAdmin):
 	list_display = ('title', 'category', 'creator', )
 	list_filter = ('category', )
 	filter_horizontal = ('question_list', )
-	search_fields = ('description', 'category', )
+	search_fields = ('description', 'category__category', )
 	actions = ['send_quiz']
+
+	def render_change_form(self, request, context, *args, **kwargs):
+		if not request.user.is_superuser:
+			context['adminform'].form.fields['category'].queryset = Category.objects.filter(creator=request.user.pk)
+			context['adminform'].form.fields['question_list'].queryset = Question.objects.filter(creator=request.user.pk)
+		return super(QuizAdmin, self).render_change_form(request, context, *args, **kwargs)
 
 	def get_form(self, request, obj=None, **kwargs):
 		if request.user.is_superuser:
 			self.fields = self.admin_fields + self.superuser_fields
 		else:
 			self.fields = self.admin_fields
+
 		return super(QuizAdmin, self).get_form(request, obj, **kwargs)
 
 	def save_model(self, request, obj, form, change):

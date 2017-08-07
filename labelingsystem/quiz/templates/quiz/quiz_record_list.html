@@ -30,7 +30,7 @@
 					<th>Title</th>
 					<th>Category</th>
 					<th>Description</th>
-					<th>Completed</th>
+					<th>Pass Mark</th>
 					<th>Score</th>
 					<th>Created At</th>
 				</tr>
@@ -41,11 +41,7 @@
 					<td>{{ quiz_record.quiz.title }}</td>
 					<td>{{ quiz_record.quiz.category }}</td>
 					<td>{{ quiz_record.quiz.description }}</td>
-					{% if quiz_record.quiz in completed_quiz_list %}
-					<td>Yes</td>
-					{% else %}
-					<td>No</td>
-					{% endif %}
+					<td>{{ quiz_record.quiz.pass_mark }}</td>
 					<td>{{ quiz_record.score }}</td>
 					<td>{{ quiz_record.created_at }}</td>
 				</tr>

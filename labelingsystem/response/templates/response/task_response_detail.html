@@ -8,22 +8,20 @@
 <div class="breadcrumbs">
 <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
 &rsaquo; <a href="/admin/response">Response</a>
-&rsaquo; <a href="/admin/response/quizresponse">Quiz responses</a>
-&rsaquo; Quiz response detail
+&rsaquo; <a href="/admin/response/taskresponse">Task responses</a>
+&rsaquo; Task response detail
 </div>
 {% endblock %}
 
 {% block content %}
     <div class="container-fluid">
         <h3>Response Detail:</h3>
-        <p>User: {{ quiz_response.user }}</p>
-        <p>Score: {{ quiz_response.score }}</p>
+        <p>User: {{ task_response.user }}</p>
         <table class="table table-striped" style="table-layout: fixed">
             <thead>
                 <tr class="table-head">
                     <th>Question</th>
                     <th>Answer</th>
-                    <th>Correct</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,11 +29,6 @@
                     <tr>
                         <td>{{ question_response.question }}</td>
                         <td>{{ question_response.answer }}</td>
-                        {% if question_response.correct %}
-                            <td><span class="glyphicon glyphicon-ok"></span></td>
-                        {% else %}
-                            <td><span class="glyphicon glyphicon-remove"></span></td>
-                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>

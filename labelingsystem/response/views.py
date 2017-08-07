@@ -6,25 +6,12 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, FormView
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 
-from .models import QuizResponse, QuizQuestionResponse
+from .models import QuizResponse, QuizQuestionResponse, TaskResponse, TaskQuestionResponse
 from quiz.models import Quiz
+from task.models import Task
 from answer.models import Answer
 
 # Create your views here.
-class QuizResponseListView(ListView):
-	model = QuizResponse
-	template_name = 'response/quiz_response_list.html'
-
-	def get_queryset(self):
-		user = self.request.user
-		self.quiz_response_list = QuizResponse.objects.filter(user=user)
-		return self.quiz_response_list.all()
-
-	def get_context_data(self, *args, **kwargs):
-		context = super(QuizResponseListView, self).get_context_data(**kwargs)
-		context["quiz_response_list"] = self.quiz_response_list
-		return context
-
 class QuizResponseDetailView(DetailView):
 	model = QuizResponse
 	template_name = 'response/quiz_response_detail.html'
@@ -36,10 +23,10 @@ class QuizResponseDetailView(DetailView):
 	def get_context_data(self, *args, **kwargs):
 		context = super(QuizResponseDetailView, self).get_context_data(**kwargs)
 		context["quiz_response"] = self.quiz_response
-		context["question_response_list"] = QuizQuestionResponse.objects.filter(user=self.request.user.pk, quiz_response=self.quiz_response).all()
+		context["question_response_list"] = QuizQuestionResponse.objects.filter(user=self.quiz_response.user.pk, quiz_response=self.quiz_response).all()
 		return context
 
-def create_response(request, pk):
+def create_quiz_response(request, pk):
     if request.method == 'POST':
 
     	quiz = Quiz.objects.get(pk=pk)
@@ -72,6 +59,7 @@ def create_response(request, pk):
                 question_response = QuizQuestionResponse.objects.create(
                     user = request.user,
                     question = question,
+                    answer = answer,
                     correct = answer.correct,
                     quiz_response = quiz_response)
             except:
@@ -81,5 +69,47 @@ def create_response(request, pk):
             request.user.profile.quiz_list.remove(quiz)
 
         return HttpResponseRedirect('/quiz/my_quiz_list')
+    else:
+        return HttpResponseNotFound("No label page can be retrieved")
+
+class TaskResponseDetailView(DetailView):
+    model = TaskResponse
+    template_name = 'response/task_response_detail.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.task_response = get_object_or_404(TaskResponse, pk=self.kwargs['pk'])
+        return super(TaskResponseDetailView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(TaskResponseDetailView, self).get_context_data(**kwargs)
+        context["task_response"] = self.task_response
+        context["question_response_list"] = TaskQuestionResponse.objects.filter(user=self.task_response.user.pk, task_response=self.task_response).all()
+        return context
+
+def create_task_response(request, pk):
+    if request.method == 'POST':
+
+        task = Task.objects.get(pk=pk)
+        question_list = task.question_list.all()
+
+        task_response = TaskResponse.objects.create(
+            user = request.user,
+            task = task)
+
+        for question in question_list:
+            try:
+                answer_id = request.POST.get("question_" + str(question.id))
+                answer = get_object_or_404(Answer, pk=answer_id)
+                question_response = TaskQuestionResponse.objects.create(
+                    user = request.user,
+                    question = question,
+                    answer = answer,
+                    task_response = task_response)
+            except:
+                pass
+
+        request.user.profile.task_list.remove(task)
+
+        return HttpResponseRedirect('/task/my_task_list')
     else:
         return HttpResponseNotFound("No label page can be retrieved")

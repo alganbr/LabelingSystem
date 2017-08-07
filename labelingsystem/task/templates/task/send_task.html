@@ -1,12 +1,23 @@
-{% extends "task/task_base.html" %}
+{% extends "admin/base_site.html" %}
+
+{% load i18n admin_urls static admin_list %}
 
 {% load crispy_forms_tags %}
 
-{% block task_content %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="/admin/task">Task</a>
+&rsaquo; <a href="/admin/task/task">Tasks</a>
+&rsaquo; Send Task
+</div>
+{% endblock %}
+
+{% block content %}
 	<div class="container-fluid">
 		<h1>Send Task</h1>
 		<form method="POST">
 			{% crispy form %}
 		</form>
 	</div>
-{% endblock task_content %}
+{% endblock content %}

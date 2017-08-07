@@ -56,16 +56,23 @@ class UploadQuestionView(FormView):
 
             # read question_content, answer_content
             for line in reader:
-                print(line)
                 question_content = line[0]
                 question = Question.objects.create(
-                    content = question_content)
+                    content = question_content,
+                    creator = user)
 
                 answer_content = line[1]
                 answer = Answer.objects.create(
                     question = question,
                     content = answer_content,
                     correct = True)
+
+                for answer_item in line[2:]:
+                    answer = Answer.objects.create(
+                    question = question,
+                    content = answer_item,
+                    correct = False)
+
 
         except Exception, e:
             print("Fail parsing quiz file.")

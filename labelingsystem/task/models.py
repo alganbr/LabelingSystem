@@ -31,18 +31,17 @@ class Task(models.Model):
         verbose_name="category",
         related_name="task_category")
 
-    max_questions = models.PositiveIntegerField(
-        blank=True,
-        null=True,
-        verbose_name="max_questions",
-        help_text="Number of questions to be answered")
-
     question_list = models.ManyToManyField(
         Question,
         default=None,
         blank=True,
         verbose_name="question_list",
         help_text="The questions in the quiz")
+
+    random_order = models.BooleanField(
+        blank=False, default=False,
+        verbose_name="random_order",
+        help_text="Display the questions in a random order or as they are set")
 
     creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -51,12 +50,6 @@ class Task(models.Model):
         blank=False,
         null=False,
         help_text="The creator of the quiz")
-
-    def save(self, force_insert=False, force_update=False, *args, **kwargs):
-        if self.pass_mark > 100:
-            raise ValidationError('%s is above 100' % self.pass_mark)
-
-        super(Task, self).save(force_insert, force_update, *args, **kwargs)
 
     def get_questions(self):
         return self.question_set.all()

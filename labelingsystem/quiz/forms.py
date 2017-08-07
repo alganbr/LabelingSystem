@@ -34,8 +34,7 @@ class CreateQuizForm(forms.ModelForm):
         self.helper.add_input(Submit('create_quiz_submit', 'Submit', css_class='btn btn-info btn-sm pull-right'))
 
 class SendQuizForm(forms.Form):
-    send_to = forms.ModelChoiceField(User.objects.all(), label="Send To")
-    # send_to = forms.ModelChoiceField(User.objects.all(), label="Send To", widget=forms.CheckboxSelectMultiple)
+    send_to = forms.ModelMultipleChoiceField(User.objects.all(), label="Send To", widget=forms.CheckboxSelectMultiple)
 
     def __init__(self, *args, **kwargs):
         super(SendQuizForm, self).__init__(*args, **kwargs)

@@ -107,7 +107,7 @@ class OwnedQuizListView(ListView):
 class SendQuizView(FormView):
     model = Quiz
     template_name = 'quiz/send_quiz.html'
-    success_url = '/quiz/send_quiz'
+    success_url = '/admin/quiz/quiz'
     form_class = SendQuizForm
 
     def dispatch(self, request, *args, **kwargs):
@@ -125,10 +125,12 @@ class SendQuizView(FormView):
         return context
 
     def form_valid(self, form):
-        receiver = form.cleaned_data['send_to']
+        receiver_list = form.cleaned_data['send_to']
         for quiz in self.quiz_list:
             try:
-                receiver.profile.quiz_list.add(quiz)
+
+                for receiver in receiver_list:
+                    receiver.profile.quiz_list.add(quiz)
             except:
                 pass
         return super(SendQuizView, self).form_valid(form)

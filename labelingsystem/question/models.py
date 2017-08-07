@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.db import models
 
 from category.models import Category
+from django.conf import settings
 
 # Create your models here.
 class Question(models.Model):
@@ -26,6 +27,14 @@ class Question(models.Model):
         blank=True,
         verbose_name="explanation",
         help_text="Explanation to be shown after the question has been answered")
+
+    creator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name="creator",
+        blank=False,
+        null=False,
+        help_text="The creator of the quiz")
 
     class Meta:
         verbose_name="question"

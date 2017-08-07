@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, FormView
 
+import random
+
 from .models import Task, Question
 from .forms import CreateTaskForm, SendTaskForm
 from category.models import Category
@@ -66,7 +68,14 @@ class TakeTaskView(ListView):
     def get_context_data(self, **kwargs):
         context = super(TakeTaskView, self).get_context_data(**kwargs)
         context["task"] = self.task
-        context["question_list"] = self.task.question_list.all()
+
+        question_list = list(self.task.question_list.all())
+
+        if self.task.random_order is True:
+            random.shuffle(question_list)
+
+        context["question_list"] = question_list
+
         return context
 
 class OwnedTaskListView(ListView):
@@ -90,17 +99,28 @@ class SendTaskView(FormView):
     form_class = SendTaskForm
 
     def dispatch(self, request, *args, **kwargs):
-        self.task = get_object_or_404(Task, pk=self.kwargs['pk'])
+        task_string = request.GET.get('ids')
+        try:
+            self.task_list = task_string.split(',')
+        except:
+            self.task_list = []
+
         return super(SendTaskView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(SendTaskView, self).get_context_data(**kwargs)
-        context["task"] = self.task
+        context["task_list"] = self.task_list
         return context
 
     def form_valid(self, form):
-        receiver = form.cleaned_data['send_to']
-        receiver.profile.task_list.add(self.task)
+        receiver_list = form.cleaned_data['send_to']
+        for task in self.task_list:
+            try:
+
+                for receiver in receiver_list:
+                    receiver.profile.task_list.add(task)
+            except:
+                pass
         return super(SendTaskView, self).form_valid(form)
 
 class TaskRecordListView(ListView):
@@ -110,11 +130,31 @@ class TaskRecordListView(ListView):
 
     def get_queryset(self):
         user = self.request.user
-        self.task_record_list = user.profile.task_response_list.all()
+        self.task_record_list = TaskResponse.objects.filter(user=user).order_by('-created_at')
         return self.task_record_list.all()
 
     def get_context_data(self, **kwargs):
         context = super(TaskRecordListView, self).get_context_data(**kwargs)
         context["task_record_list"] = self.task_record_list
-        context["completed_task_list"] = self.get_completed_taskzes()
         return context
+
+class EvaluateTaskView(ListView):
+    model = Question
+    template_name = 'task/evaluate_task.html'
+    success_url = 'admin/task/task'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.task = get_object_or_404(Task, pk=self.kwargs['pk'])
+        self.question_list = self.task.question_list.all()
+        self.task_response_list = TaskResponse.objects.filter(task=self.task.pk)
+
+        print(len(self.task_response_list))
+        return super(EvaluateTaskView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(EvaluateTaskView, self).get_context_data(**kwargs)
+        context["task"] = self.task
+        context["question_list"] = self.question_list
+        context["task_response_list"] = self.task_response_list
+        return context
+

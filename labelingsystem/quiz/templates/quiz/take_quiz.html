@@ -1,10 +1,11 @@
 {% extends "quiz/quiz_base.html" %}
+{% load shuffle %}
 
 {% block quiz_content %}
 	<div class="container-fluid">
 		<h3>{{ quiz.title }}</h3>
 		<h4>{{ quiz.description }}</h4>
-		<form action="{% url 'response:create_response' quiz.id %}" method="POST">
+		<form action="{% url 'response:create_quiz_response' quiz.id %}" method="POST">
 			{% csrf_token %} 
 
 			{% for question in question_list %}
@@ -15,10 +16,20 @@
 				<div class="panel-body">
 					<table class="table table-striped">
 						<tbody>
-						{% for answer in question.answer_set.all %}
+						{% for answer in question.answer_set.all|shuffle %}
 						<tr>
-							<td width="20%"> {{ answer }} </td>
-							<td width="80%"><input type="radio" name="question_{{ question.id }}" value="{{ answer.id }}"></td>
+							<td>
+								<label style="display: block;">
+									<div class="row">
+										<div class="col-xs-8">
+											{{ answer }}
+										</div>
+										<div class="col-xs-4">
+											<input style="text-align: center" type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
+										</div>
+									</div>
+								</label>
+							</td>
 						</tr>
 						{% endfor %}
 						</tbody>

@@ -10,5 +10,6 @@ urlpatterns = [
   url(r'^take_task/(?P<pk>[-\w]+)$', views.TakeTaskView.as_view(), name='take_task'),
   url(r'^create_task/$', views.CreateTaskView.as_view(), name='create_task'),
   url(r'^owned_task_list/$', views.OwnedTaskListView.as_view(), name='owned_task_list'),
-  url(r'^send_task/(?P<pk>[-\w]+)$', views.SendTaskView.as_view(), name='send_task'),
+  url(r'^send_task/$', views.SendTaskView.as_view(), name='send_task'),
+  url(r'^evaluate_task/(?P<pk>[-\w]+)$', views.EvaluateTaskView.as_view(), name='evaluate_task'),
 ]
