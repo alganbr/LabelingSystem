@@ -108,9 +108,9 @@
 	</div>
 	<!-- /#wrapper -->
 
+	<!-- Scripts -->
+	<script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+	{% block script %}{% endblock script %}
+
 </body>
 {% endblock body %}
-
-{% block script %}
-<script type="text/javascript" src="{% static 'js/base.js' %}"></script>
-{% endblock script %}

@@ -85,7 +85,7 @@
                     Quiz Owned
                   </div>
                   <div class="col-xs-10">
-                    : &nbsp {{ user.profile.quiz_list.count }}
+                    : &nbsp {{ quiz_owned.count }}
                   </div>
                 </div>
                 <div class="row">
@@ -93,7 +93,7 @@
                     Task Owned
                   </div>
                   <div class="col-xs-10">
-                    : &nbsp {{ user.profile.task_list.count }}
+                    : &nbsp {{ task_owned.count }}
                   </div>
                 </div>
                 {% endif %}

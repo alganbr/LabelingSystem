@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
+from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView, FormView
 
@@ -69,7 +70,6 @@ class MyQuizListView(ListView):
 class TakeQuizView(ListView):
     model = Question
     template_name = 'quiz/take_quiz.html'
-    success_url = '/quiz/my_quiz_list'
 
     def dispatch(self, request, *args, **kwargs):
         self.quiz = get_object_or_404(Quiz, pk=self.kwargs['pk'])
@@ -87,7 +87,6 @@ class TakeQuizView(ListView):
             question_list = question_list[:self.quiz.max_questions]
 
         context["question_list"] = question_list
-
         return context
 
 class OwnedQuizListView(ListView):

@@ -10,6 +10,8 @@ from django.http import Http404
 
 from .models import Profile
 from .forms import UserUpdateForm, ProfileUpdateForm
+from quiz.models import Quiz
+from task.models import Task
 
 # Create your views here.
 from django.contrib.auth import get_user_model
@@ -37,6 +39,8 @@ class ProfileDetailView(UpdateView):
 		context = super(ProfileDetailView, self).get_context_data(**kwargs)
 		context["user_form"] = UserUpdateForm(self.request.POST or None, instance=self.get_object())
 		context["profile_form"] = ProfileUpdateForm(self.request.POST or None, self.request.FILES, instance=self.get_object().profile)
+		context["quiz_owned"] = Quiz.objects.filter(creator=self.request.user.pk)
+		context["task_owned"] = Quiz.objects.filter(creator=self.request.user.pk)
 		return context
 
 	def post(self, request, *args, **kwargs):
@@ -48,6 +52,7 @@ class ProfileDetailView(UpdateView):
 			user_form.save()
 
 		if profile_form.is_valid():
+			profile_form.profile_pic = self.request.FILES.get('profile_pic')
 			profile_form.save()
 
 		return super(ProfileDetailView, self).form_valid(profile_form)

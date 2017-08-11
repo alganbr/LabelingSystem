@@ -42,10 +42,3 @@ class SendQuizForm(forms.Form):
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn btn-info btn-sm pull-right'))
 
-class TakeQuizForm(forms.Form):
-
-	def __init__(self, *args, **kwargs):
-		super(TakeQuizForm, self).__init__(*args, **kwargs)
-
-		self.helper = FormHelper()
-		self.helper.add_input(Submit('submit', 'Submit', css_class='btn btn-info btn-sm pull-right'))

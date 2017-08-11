@@ -5,6 +5,7 @@ from django.contrib import admin
 from answer.admin import AnswerInline
 
 from .models import Question
+from category.models import Category
 
 # Register your models here.
 class QuestionAdmin(admin.ModelAdmin):
@@ -15,6 +16,11 @@ class QuestionAdmin(admin.ModelAdmin):
 	fields = ('content', 'category', 'explanation', )
 	search_fields = ('content', 'explanation', )
 	inlines = [AnswerInline]
+
+	def render_change_form(self, request, context, *args, **kwargs):
+		if not request.user.is_superuser:
+			context['adminform'].form.fields['category'].queryset = Category.objects.filter(creator=request.user.pk)
+		return super(QuestionAdmin, self).render_change_form(request, context, *args, **kwargs)
 
 	def get_form(self, request, obj=None, **kwargs):
 		if request.user.is_superuser:
