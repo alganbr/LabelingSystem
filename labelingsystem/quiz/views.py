@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView, ListView, FormView
+from django.views.generic import DetailView, ListView, FormView, TemplateView
 
 import random
 
@@ -88,6 +88,13 @@ class TakeQuizView(ListView):
 
         context["question_list"] = question_list
         return context
+
+class QuizSuccessView(TemplateView):
+    template_name = 'quiz/quiz_success.html'
+
+class QuizFailView(TemplateView):
+    template_name = 'quiz/quiz_fail.html'
+
 
 class OwnedQuizListView(ListView):
     model = Quiz

@@ -63,7 +63,7 @@
                     {% block usertools %}
                     <ul class="navbar-form navbar-right">
                         <a href="{% url 'profile:profile_detail' user.username %}"> Hello, {{ user.username }}               </a>
-                        <a href="{% url 'logout' %}" class="btn btn-info">Logout</a>
+                        <a href="{% url 'logout' %}"><div class="btn btn-info">Logout</div></a>
                     </ul>
                     {% endblock %}
                     {% block nav-global %}{% endblock %}

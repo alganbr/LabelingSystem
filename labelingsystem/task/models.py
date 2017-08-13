@@ -10,6 +10,7 @@ from django.conf import settings
 
 from category.models import Category
 from question.models import Question
+from quiz.models import Quiz
 
 # Create your models here.
 # Create your models here.
@@ -22,7 +23,7 @@ class Task(models.Model):
     description = models.TextField(
         verbose_name="description",
         blank=True,
-        help_text="a description of the quiz")
+        help_text="A description of the quiz")
 
     category = models.ForeignKey(
         Category,
@@ -30,6 +31,13 @@ class Task(models.Model):
         blank=True,
         verbose_name="category",
         related_name="task_category")
+
+    required_quiz = models.OneToOneField(
+        Quiz,
+        verbose_name="required_quiz",
+        blank=True,
+        null=True,
+        help_text="The prerequisite quiz for the task")
 
     question_list = models.ManyToManyField(
         Question,

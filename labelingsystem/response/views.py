@@ -68,7 +68,12 @@ def create_quiz_response(request, pk):
         if quiz.single_attempt is True:
             request.user.profile.quiz_list.remove(quiz)
 
-        return HttpResponseRedirect('/quiz/my_quiz_list')
+        print(quiz_response.score);
+        print(quiz.pass_mark);
+        if quiz_response.score >= quiz.pass_mark:
+            return HttpResponseRedirect('/quiz/quiz_success')
+        else:
+            return HttpResponseRedirect('/quiz/quiz_fail')
     else:
         return HttpResponseNotFound("No label page can be retrieved")
 

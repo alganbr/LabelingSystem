@@ -2,43 +2,57 @@
 
 {% load shuffle %}
 
-{% block task_content %}
-	<div class="container-fluid">
-		<h3>{{ task.title }}</h3>
-		<h4>{{ task.description }}</h4>
-		<form action="{% url 'response:create_task_response' task.id %}" method="POST">
-			{% csrf_token %} 
+{% load static %}
 
-			{% for question in question_list %}
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">{{ question.content }}</h3>
+{% block task_content %}
+<div class="container-fluid">
+
+	<form id="task_form" action="{% url 'response:create_task_response' task.id %}" method="POST">
+		{% csrf_token %} 
+
+		{% for question in question_list %}
+		<div class="row" style="display: none;">
+			<div class="col-sm-12">
+				<div class="loader">
+					<div class="card">
+
+						<div class="question">
+							<h3>
+								<span id="question_{{ question.id }}"> {{ question }}</span>
+							</h3>
+						</div>
+						<ul>
+
+							{% for answer in question.answer_set.all|shuffle %}
+							<li>
+								<input id="answer_{{ answer.id }}" type="radio" name="question_{{ question.id }}" value="{{ answer.id }}" onclick="this.form.submit()">
+								<label for="answer_{{ answer.id }}" class="element-animation">{{ answer }}</label>
+								<div class="check"></div>
+							</li>
+							{% endfor %}
+
+						</ul>
+					</div>
 				</div>
-				<div class="panel-body">
-					<table class="table table-striped">
-						<tbody>
-						{% for answer in question.answer_set.all|shuffle %}
-						<tr>
-							<td>
-								<label style="display: block;">
-									<div class="row">
-										<div class="col-xs-8">
-											{{ answer }}
-										</div>
-										<div class="col-xs-4">
-											<input style="text-align: center" type="radio" name="question_{{ question.id }}" value="{{ answer.id }}">
-										</div>
-									</div>
-								</label>
-							</td>
-						</tr>
-						{% endfor %}
-						</tbody>
-					</table>
+				<div class="text-muted">
+					<span class="answer"></span>
 				</div>
+
 			</div>
-			{% endfor %}
-			<input class="btn btn-lg btn-primary" type="submit" value="Submit" style="float: right"/>
-		</form>
-	</div>
+		</div>
+		{% endfor %}
+	</form>
+</div>
 {% endblock task_content %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'task/css/take_task.css' %}">
+{% endblock style %}
+
+{% block script %}
+<script type="text/javascript">
+	var num_questions = {{ question_list|length }};
+</script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script type="text/javascript" src="{% static 'task/js/take_task.js' %}"></script>
+{% endblock script %}

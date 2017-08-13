@@ -3,17 +3,26 @@
 $(document).ready(function(){
 
     var count = 0;
-    var quiz_form = document.getElementById('quiz_form');
-    var rows = $(quiz_form).find('div.row');
+    var task_form = document.getElementById('task_form');
 
-    $(document.body).on('click', "div.start_quiz", function (e) {
-        var prolog = document.getElementById('prolog');
-        $(prolog).hide();
+    // bind form
+    $(task_form).ajaxForm(function() {
+        alert("Thank you for your comment!");
+        console.log("submitting");
+        return false;
+    });
 
-        // show current row
-        var curr = $(rows).get(count);
-        $(curr).show();
-    })
+    $('#task_form').on('submit', function (e) {
+        e.preventDefault();
+        console.log("form submitted");
+        create_post();
+    });
+
+    var rows = $(task_form).find('div.row');
+
+    // show current row
+    var curr = $(rows).get(count);
+    $(curr).show();
 
     var num_questions = window.num_questions || null
     

@@ -12,7 +12,7 @@ from question.models import Question
 # Register your models here.
 
 class TaskAdmin(admin.ModelAdmin):
-	admin_fields = ('title', 'description', 'category', 'random_order', 'question_list', )
+	admin_fields = ('title', 'description', 'category', 'required_quiz','random_order', 'question_list', )
 	superuser_fields = ('creator', )
 	list_display = ('title', 'category', 'creator', 'evaluate', )
 	list_filter = ('category', )
