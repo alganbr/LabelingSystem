@@ -1,4 +1,4 @@
-Django==1.11.1
+Django==1.11.4
 psycopg2==2.7.1
 django-bootstrap3==8.2.3
 django-crispy-forms==1.6.1

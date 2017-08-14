@@ -1,85 +1,116 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-import re
-
 from django.db import models
 from django.core.validators import MaxValueValidator
-from django.contrib.auth.models import User
-from django.conf import settings
 
-from category.models import Category
-from question.models import Question
+from django.conf import settings
+from label.models import Label
+from post.models import Post
 
 # Create your models here.
 class Quiz(models.Model):
-    title = models.CharField(
-        verbose_name="title",
-        max_length=60, 
-        blank=False)
+	
+	class Meta:
+		verbose_name = 'quiz'
+		verbose_name_plural = 'quizzes'
 
-    description = models.TextField(
-        verbose_name="description",
-        blank=True,
-        help_text="a description of the quiz")
+	title = models.CharField(
+		max_length = 50,
+		verbose_name = 'title',
+		blank = False)
 
-    category = models.ForeignKey(
-        Category,
-        null=True,
-        blank=True,
-        verbose_name="category",
-        related_name="quiz_category")
+	instruction = models.TextField(
+		verbose_name = 'instruction',
+		blank = True)
 
-    max_questions = models.PositiveIntegerField(
-        blank=True,
-        null=True,
-        verbose_name="max_questions",
-        help_text="Number of questions to be answered")
+	max_posts = models.PositiveIntegerField(
+		blank = True,
+		null = True,
+		verbose_name = 'max posts')
 
-    pass_mark = models.SmallIntegerField(
-        blank=True,
-        default=0,
-        verbose_name="pass_mark",
-        help_text="Percentage required to pass",
-        validators=[MaxValueValidator(100)])
+	pass_mark = models.PositiveIntegerField(
+		blank = True,
+		default = 0,
+		verbose_name = 'pass mark',
+		validators = [MaxValueValidator(100)])
 
-    random_order = models.BooleanField(
-        blank=False, default=False,
-        verbose_name="random_order",
-        help_text="Display the questions in a random order or as they are set")
+	label_list = models.ManyToManyField(
+		Label,
+		blank = False,
+		verbose_name = 'label list')
 
-    single_attempt = models.BooleanField(
-        blank=False, default=False,
-        verbose_name="single_attempt",
-        help_text="If yes, only one attempt by a user will be permitted")
+	post_list = models.ManyToManyField(
+		Post,
+		default = None,
+		blank = True,
+		verbose_name = 'post list')
 
-    question_list = models.ManyToManyField(
-        Question,
-        default=None,
-        blank=True,
-        verbose_name="question_list",
-        help_text="The questions in the quiz")
+	creator = models.ForeignKey(
+		settings.AUTH_USER_MODEL,
+		on_delete = models.CASCADE,
+		verbose_name = 'creator',
+		blank = False,
+		null = False)
 
-    creator = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        verbose_name="creator",
-        blank=False,
-        null=False,
-        help_text="The creator of the quiz")
+	def __unicode__(self):
+		return self.title
 
-    def save(self, force_insert=False, force_update=False, *args, **kwargs):
-        if self.pass_mark > 100:
-            raise ValidationError('%s is above 100' % self.pass_mark)
+class AnswerKey(models.Model):
 
-        super(Quiz, self).save(force_insert, force_update, *args, **kwargs)
+	class Meta:
+		verbose_name = 'answer key'
+		verbose_name_plural = 'answer keys'
 
-    def get_questions(self):
-        return self.question_set.all()
+	quiz = models.ForeignKey(
+		Quiz,
+		blank = False)
 
-    class Meta:
-        verbose_name="quiz"
-        verbose_name_plural="quizzes"
+	def __unicode__(self):
+		return "{} answer key".format(self.quiz)
 
-    def __unicode__(self):
-        return self.title
+class Answer(models.Model):
+
+	class Meta:
+		verbose_name = 'answer'
+		verbose_name_plural = 'answers'
+
+	answer_key = models.ForeignKey(
+		AnswerKey,
+		blank = False)
+
+	post = models.ForeignKey(
+		Post,
+		blank = False)
+
+	label = models.ForeignKey(
+		Label,
+		blank = False)
+
+	def __unicode__(self):
+		return self.post + " -> " + self.label
+
+class QuizResponse(models.Model):
+
+	class Meta:
+		verbose_name = 'quiz response'
+		verbose_name_plural = 'quiz responses'
+
+	responder = models.ForeignKey(
+		settings.AUTH_USER_MODEL,
+		on_delete = models.CASCADE,
+		blank = False,
+		verbose_name = 'responder')
+
+	quiz = models.ForeignKey(
+		Quiz,
+		on_delete = models.CASCADE,
+		blank = False,
+		verbose_name = 'quiz')
+
+	score = models.PositiveIntegerField(
+		default = 0,
+		validators = [MaxValueValidator(100)])
+
+	timestamp = models.DateTimeField(
+		auto_now_add = True)
+
+
+

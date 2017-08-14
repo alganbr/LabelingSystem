@@ -1,70 +1,49 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-import re
-
 from django.db import models
-from django.core.validators import MaxValueValidator
-from django.contrib.auth.models import User
 from django.conf import settings
 
-from category.models import Category
-from question.models import Question
+from label.models import Label
+from post.models import Post
 from quiz.models import Quiz
 
 # Create your models here.
-# Create your models here.
 class Task(models.Model):
-    title = models.CharField(
-        verbose_name="title",
-        max_length=60, 
-        blank=False)
 
-    description = models.TextField(
-        verbose_name="description",
-        blank=True,
-        help_text="A description of the quiz")
+	class Meta:
+		verbose_name = 'task'
+		verbose_name_plural = 'tasks'
 
-    category = models.ForeignKey(
-        Category,
-        null=True,
-        blank=True,
-        verbose_name="category",
-        related_name="task_category")
+	title = models.CharField(
+		max_length = 50,
+		verbose_name = 'title',
+		blank = False)
 
-    required_quiz = models.OneToOneField(
-        Quiz,
-        verbose_name="required_quiz",
-        blank=True,
-        null=True,
-        help_text="The prerequisite quiz for the task")
+	instruction = models.TextField(
+		verbose_name = 'instruction',
+		blank = True)
 
-    question_list = models.ManyToManyField(
-        Question,
-        default=None,
-        blank=True,
-        verbose_name="question_list",
-        help_text="The questions in the quiz")
+	prerequisite = models.ForeignKey(
+		Quiz,
+		verbose_name = 'prerequisite',
+		blank = True)
 
-    random_order = models.BooleanField(
-        blank=False, default=False,
-        verbose_name="random_order",
-        help_text="Display the questions in a random order or as they are set")
+	label_list = models.ManyToManyField(
+		Label,
+		blank = False,
+		verbose_name = 'label list')
 
-    creator = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        verbose_name="creator",
-        blank=False,
-        null=False,
-        help_text="The creator of the quiz")
+	post_list = models.ManyToManyField(
+		Post,
+		default = None,
+		blank = True,
+		verbose_name = 'post list')
 
-    def get_questions(self):
-        return self.question_set.all()
+	creator = models.ForeignKey(
+		settings.AUTH_USER_MODEL,
+		on_delete = models.CASCADE,
+		verbose_name = 'creator',
+		blank = False,
+		null = False)
 
-    class Meta:
-        verbose_name="task"
-        verbose_name_plural="tasks"
+	def __unicode__(self):
+		return self.title
 
-    def __unicode__(self):
-        return self.title

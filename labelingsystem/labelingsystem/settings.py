@@ -43,15 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #apps
-    'answer',
-    'bootstrap3',
-    'category',
-    'crispy_forms',
-    'labelingsystem',
-    'profile',
-    'question',
+    'label',
+    'post',
     'quiz',
-    'response',
     'task',
 ]
 
