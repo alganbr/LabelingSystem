@@ -1,0 +1,38 @@
+{% extends "base_site.html" %}
+
+{% load static %}
+{% load check_prerequisite %}
+
+{% block extrastyle %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock extrastyle %}
+
+
+{% block content %}
+<div class="container-fluid">
+	<div class="col-sm-12">
+
+		{% for task in task_list %}
+
+		<div class="bs-calltoaction bs-calltoaction-info">
+			<div class="row">
+				<div class="col-md-9 cta-contents">
+					<h1 class="cta-title">{{ task }}</h1>
+					<div class="cta-desc">
+						<p>{{ task.description }}</p>
+					</div>
+				</div>
+				<div class="col-md-3 cta-button">
+					{% check_prerequisite task request.user as prerequisite_satisfied %}
+					<a href="{% if prerequisite_satisfied %}{% url 'task:take_task' task.pk %}{% else %}
+					{% url 'quiz:take_quiz' task.prerequisite.pk %}{% endif %}" 
+					class="btn btn-lg btn-block btn-default">Get it done!</a>
+				</div>
+			</div>
+		</div>
+
+		{% endfor %}
+
+	</div>
+</div>
+{% endblock content %}

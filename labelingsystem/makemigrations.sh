@@ -1,1 +1,1 @@
-python3 manage.py makemigrations label post quiz task
+python3 manage.py makemigrations label post quiz task response

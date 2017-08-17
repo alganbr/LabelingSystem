@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
-
 from django.conf import settings
 from label.models import Label
 from post.models import Post
@@ -17,8 +16,8 @@ class Quiz(models.Model):
 		verbose_name = 'title',
 		blank = False)
 
-	instruction = models.TextField(
-		verbose_name = 'instruction',
+	description = models.TextField(
+		verbose_name = 'description',
 		blank = True)
 
 	max_posts = models.PositiveIntegerField(
@@ -50,7 +49,7 @@ class Quiz(models.Model):
 		blank = False,
 		null = False)
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.title
 
 class AnswerKey(models.Model):
@@ -59,11 +58,11 @@ class AnswerKey(models.Model):
 		verbose_name = 'answer key'
 		verbose_name_plural = 'answer keys'
 
-	quiz = models.ForeignKey(
+	quiz = models.OneToOneField(
 		Quiz,
 		blank = False)
 
-	def __unicode__(self):
+	def __str__(self):
 		return "{} answer key".format(self.quiz)
 
 class Answer(models.Model):
@@ -74,43 +73,21 @@ class Answer(models.Model):
 
 	answer_key = models.ForeignKey(
 		AnswerKey,
-		blank = False)
+		blank = False,
+		default = None)
 
 	post = models.ForeignKey(
 		Post,
-		blank = False)
+		blank = False,
+		default = None)
 
 	label = models.ForeignKey(
 		Label,
-		blank = False)
-
-	def __unicode__(self):
-		return self.post + " -> " + self.label
-
-class QuizResponse(models.Model):
-
-	class Meta:
-		verbose_name = 'quiz response'
-		verbose_name_plural = 'quiz responses'
-
-	responder = models.ForeignKey(
-		settings.AUTH_USER_MODEL,
-		on_delete = models.CASCADE,
 		blank = False,
-		verbose_name = 'responder')
+		default = None)
 
-	quiz = models.ForeignKey(
-		Quiz,
-		on_delete = models.CASCADE,
-		blank = False,
-		verbose_name = 'quiz')
-
-	score = models.PositiveIntegerField(
-		default = 0,
-		validators = [MaxValueValidator(100)])
-
-	timestamp = models.DateTimeField(
-		auto_now_add = True)
+	def __str__(self):
+		return '{0}, {1}'.format(self.post, self.label)
 
 
 

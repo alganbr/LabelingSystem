@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Quiz, Answer, AnswerKey, QuizResponse
+from .models import Quiz, Answer, AnswerKey
 
 # Register your models here.
 class QuizAdmin(admin.ModelAdmin):
@@ -10,13 +10,6 @@ class QuizAdmin(admin.ModelAdmin):
 
 admin.site.register(Quiz, QuizAdmin)
 
-# class AnswerAdmin(admin.ModelAdmin):
-# 	list_display = ('quiz', 'post', 'label', )
-# 	list_filter = ('quiz', 'post', )
-# 	search_fields = ('quiz', 'post', )
-
-# admin.site.register(Answer, AnswerAdmin)
-
 class AnswerInline(admin.TabularInline):
 	model = Answer
 
@@ -25,10 +18,3 @@ class AnswerKeyAdmin(admin.ModelAdmin):
 	inlines = [AnswerInline, ]
 
 admin.site.register(AnswerKey, AnswerKeyAdmin)
-
-class QuizResponseAdmin(admin.ModelAdmin):
-	list_display = ('responder', 'quiz', 'score', 'timestamp', )
-	list_filter = ('responder', 'quiz', 'score')
-	search_fields = ('responder', 'quiz', )
-
-admin.site.register(QuizResponse, QuizResponseAdmin)

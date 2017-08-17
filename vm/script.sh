@@ -11,7 +11,6 @@ pip3 install -r /home/vagrant/labelingsystem/requirements.txt
 
 # Create database and syncdb
 echo "ALTER USER postgres PASSWORD 'postgres'" | sudo -u postgres psql
-alias python=/usr/bin/python3
 pushd /home/vagrant/labelingsystem
 ./deletemigrations.sh
 ./makemigrations.sh

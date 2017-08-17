@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Post, PostResponse
+from .models import Post
 
 # Register your models here.
 class PostAdmin(admin.ModelAdmin):
@@ -9,9 +9,3 @@ class PostAdmin(admin.ModelAdmin):
 
 admin.site.register(Post, PostAdmin)
 
-class PostResponseAdmin(admin.ModelAdmin):
-	list_display = ('responder', 'post', 'timestamp', )
-	list_filter = ('responder', 'post', )
-	search_fields = ('responder', 'post', )
-
-admin.site.register(PostResponse, PostResponseAdmin)

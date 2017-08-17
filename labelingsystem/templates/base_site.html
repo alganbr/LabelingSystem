@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load i18n static %}
+
+{% block body %}
+<body>
+
+<!-- Container -->
+<div id="container">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-header">
+            <a class="navbar-left" href="{% url 'home' %}"><img class="navbar-logo" src="{% static 'img/ucipt_logo.png' %}"></a>
+            <a class="navbar-brand" href="{% url 'home' %}"> UCIPT Labeling System               </a>
+        </div>
+        <div class="container-fluid">
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="navbar-form navbar-right">
+                    <a href="#"> Hello, {{ user }}               </a>
+                    <a href="{% url 'account:logout' %}"><label class="btn btn-info">Logout</label></a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div id="content" class="{% block coltype %}colM{% endblock %}">
+        {% block pretitle %}{% endblock %}
+        {% block content_title %}{% endblock %}
+        {% block content %}{% endblock %}
+        {% block sidebar %}{% endblock %}
+        <br class="clear" />
+    </div>
+    <!-- END Content -->
+
+    {% block footer %}<div id="footer"></div>{% endblock %}
+</div>
+<!-- END Container -->
+</body>
+{% endblock body %}

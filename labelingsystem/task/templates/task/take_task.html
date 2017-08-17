@@ -1,0 +1,52 @@
+{% extends "base_site.html" %}
+
+{% load static %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'task/css/take_task.css' %}">
+{% endblock extrastyle %}
+
+{% block extrascript %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script type="text/javascript" src="{% static 'task/js/take_task.js' %}"></script>
+{% endblock extrascript %}
+
+{% block content %}
+<div class="container-fluid">
+
+	<form id="post_form" action="{% url 'response:create_post_response' task.pk post.pk %}" method="POST">
+		{% csrf_token %} 
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="loader">
+					<div class="card">
+
+						<div class="post">
+							<h3>
+								<span id="post_{{ post.id }}"> {{ post }}</span>
+							</h3>
+						</div>
+						<ul>
+
+							{% for label in label_list %}
+							<li class="btn btn-default">
+								<input id="label_{{ label.id }}" type="radio" name="post_{{ post.id }}" value="{{ label.id }}">
+								<label for="label_{{ label.id }}" class="element-animation">{{ label }}</label>
+								<div class="check"></div>
+							</li>
+							{% endfor %}
+
+						</ul>
+					</div>
+				</div>
+				<div class="text-muted">
+					<span class="label"></span>
+				</div>
+
+			</div>
+		</div>
+	</form>
+
+</div>
+{% endblock content %}

@@ -13,12 +13,24 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf.urls.static import static
+from django.conf import settings
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic.base import RedirectView
+
+from .views import HomeView
 
 admin.site.site_header = 'UCIPT Administration'
 admin.site.site_title = 'UCIPT Labeling System'
 
 urlpatterns = [
+	url(r'^$', RedirectView.as_view(url=reverse_lazy('account:login'))),
     url(r'^admin/', admin.site.urls),
-]
+    url(r'^index/$', HomeView.as_view(), name='home'),
+    url(r'^account/', include('account.urls', namespace='account')),
+    url(r'^task/', include('task.urls', namespace='task')),
+    url(r'^quiz/', include('quiz.urls', namespace='quiz')),
+    url(r'^response/', include('response.urls', namespace='response')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

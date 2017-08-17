@@ -1,4 +1,4 @@
-for D in `find . -type d -maxdepth 1`
+for D in `find . -maxdepth 1 -type d`
 do
     rm -rf ./${D}/migrations
 done

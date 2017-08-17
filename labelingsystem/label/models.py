@@ -1,5 +1,4 @@
 from django.db import models
-from post.models import Post
 
 # Create your models here.
 class Label(models.Model):
@@ -11,7 +10,8 @@ class Label(models.Model):
 	content = models.CharField(
 		max_length = 1000,
 		blank = False,
+		default = None,
 		verbose_name = 'content')
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.content

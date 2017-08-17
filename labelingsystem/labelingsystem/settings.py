@@ -29,6 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+AUTH_USER_MODEL = 'cuser.CUser'
+
 # Crispy Form using Bootstrap3
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
@@ -43,9 +45,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #apps
+    'account',
+    'bootstrap3',
+    'crispy_forms',
+    'cuser',
     'label',
     'post',
     'quiz',
+    'response',
     'task',
 ]
 
@@ -139,4 +146,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = MEDIA_DIR
 
 LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = 'account:login'

@@ -17,8 +17,8 @@ class Task(models.Model):
 		verbose_name = 'title',
 		blank = False)
 
-	instruction = models.TextField(
-		verbose_name = 'instruction',
+	description = models.TextField(
+		verbose_name = 'description',
 		blank = True)
 
 	prerequisite = models.ForeignKey(
@@ -28,13 +28,14 @@ class Task(models.Model):
 
 	label_list = models.ManyToManyField(
 		Label,
-		blank = False,
+		blank = True,
+		default = None,
 		verbose_name = 'label list')
 
 	post_list = models.ManyToManyField(
 		Post,
-		default = None,
 		blank = True,
+		default = None,
 		verbose_name = 'post list')
 
 	creator = models.ForeignKey(
@@ -42,8 +43,34 @@ class Task(models.Model):
 		on_delete = models.CASCADE,
 		verbose_name = 'creator',
 		blank = False,
+		default = None,
 		null = False)
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.title
+
+class Participation(models.Model):
+
+	class Meta:
+		verbose_name = 'participation'
+		verbose_name_plural = 'participantions'
+		unique_together = ('task', 'coder')
+
+	task = models.ForeignKey(
+		Task,
+		on_delete = models.CASCADE,
+		blank = False,
+		default = None,
+		verbose_name = 'task')
+
+	coder = models.ForeignKey(
+		settings.AUTH_USER_MODEL,
+		on_delete = models.CASCADE,
+		blank = False,
+		default = None,
+		verbose_name = 'coder')
+
+	def __str__(self):
+		return '{0} | {1}'.format(self.task, self.coder)
+
 

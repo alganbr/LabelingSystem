@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Task
+from .models import Task, Participation
 
 # Register your models here.
 class TaskAdmin(admin.ModelAdmin):
@@ -9,3 +9,10 @@ class TaskAdmin(admin.ModelAdmin):
 	search_fields = ('title', )
 
 admin.site.register(Task, TaskAdmin)
+
+class ParticipationAdmin(admin.ModelAdmin):
+	list_display = ('task', 'coder', )
+	list_filter = ('task', 'coder', )
+	search_fields = ('task', 'coder', )
+
+admin.site.register(Participation, ParticipationAdmin)
