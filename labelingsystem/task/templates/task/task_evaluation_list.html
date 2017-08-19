@@ -10,7 +10,9 @@
 {% block breadcrumbs %}
 <div class="breadcrumbs">
 <a href="{% url 'home' %}">Home </a>
-&rsaquo; Task List
+&rsaquo;
+<a href="{% url 'admin_index' %}">Admin Home </a>
+&rsaquo; Task Evaluation List
 </div>
 {% endblock breadcrumbs %}
 
@@ -31,9 +33,8 @@
 				</div>
 				<div class="col-md-3 cta-button">
 					{% check_prerequisite task request.user as prerequisite_satisfied %}
-					<a href="{% if prerequisite_satisfied %}{% url 'task:take_task' task.pk %}{% else %}
-					{% url 'quiz:take_quiz' task.prerequisite.pk %}{% endif %}" 
-					class="btn btn-lg btn-block btn-default">Get it done!</a>
+					<a href="{% url 'task:task_evaluation_detail' task.pk %}"
+					class="btn btn-lg btn-block btn-default">Evaluate this task!</a>
 				</div>
 			</div>
 		</div>

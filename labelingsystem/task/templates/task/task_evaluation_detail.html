@@ -1,0 +1,30 @@
+{% extends "base_site.html" %}
+
+{% load static %}
+{% load check_prerequisite %}
+
+{% block extrastyle %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock extrastyle %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'home' %}">Home </a>
+&rsaquo;
+<a href="{% url 'admin_index' %}">Admin Home </a>
+&rsaquo;
+<a href="{% url 'task:task_evaluation_list' %}">Task Evaluation List </a>
+&rsaquo; Task Evaluation Detail
+</div>
+{% endblock breadcrumbs %}
+
+
+{% block content %}
+<div class="container-fluid">
+	<div class="col-sm-12">
+
+		<h1>This is task evaluation</h1>
+
+	</div>
+</div>
+{% endblock content %}

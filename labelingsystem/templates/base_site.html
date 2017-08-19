@@ -24,6 +24,12 @@
         </div>
     </nav>
 
+    {% block breadcrumbs %}
+    <div class="breadcrumbs">
+    <a href="{% url 'home' %}">{% trans 'Home' %}</a>
+    </div>
+    {% endblock %}
+
     <!-- Content -->
     <div id="content" class="{% block coltype %}colM{% endblock %}">
         {% block pretitle %}{% endblock %}

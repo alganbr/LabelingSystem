@@ -24,7 +24,8 @@ class Task(models.Model):
 	prerequisite = models.ForeignKey(
 		Quiz,
 		verbose_name = 'prerequisite',
-		blank = True)
+		blank = True,
+		null = True)
 
 	label_list = models.ManyToManyField(
 		Label,

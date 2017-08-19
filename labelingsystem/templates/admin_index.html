@@ -6,6 +6,13 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
 {% endblock extrastyle %}
 
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'home' %}">Home </a>
+&rsaquo; Admin Home
+</div>
+{% endblock breadcrumbs %}
+
 {% block content %}
 <div class="container-fluid">
 	<div class="col-sm-12">
@@ -13,13 +20,13 @@
 		<div class="bs-calltoaction bs-calltoaction-info">
 			<div class="row">
 				<div class="col-md-9 cta-contents">
-					<h1 class="cta-title">Profile &nbsp <span class="glyphicon glyphicon-user"></span></h1>
+					<h1 class="cta-title">Create New Task &nbsp <span class="glyphicon glyphicon-pencil"></span></h1>
 					<div class="cta-desc">
-						<p>View your profile and check your progress.</p>
+						<p>Step by step interface to create and send new task.</p>
 					</div>
 				</div>
 				<div class="col-md-3 cta-button">
-					<a href="#" class="btn btn-lg btn-block btn-default">View Profile</a>
+					<a href="{% url 'task:create_task' %}" class="btn btn-lg btn-block btn-default">Start</a>
 				</div>
 			</div>
 		</div>
@@ -27,13 +34,13 @@
 		<div class="bs-calltoaction bs-calltoaction-info">
 			<div class="row">
 				<div class="col-md-9 cta-contents">
-					<h1 class="cta-title">My Tasks &nbsp <span class="glyphicon glyphicon-list-alt"></span></h1>
+					<h1 class="cta-title">Task Evaluation <span class="glyphicon glyphicon-list-alt"></span></h1>
 					<div class="cta-desc">
-						<p>View the list of tasks you are given.</p>
+						<p>Evaluate the task you have assigned to the coders.</p>
 					</div>
 				</div>
 				<div class="col-md-3 cta-button">
-					<a href="{% url 'task:task_list' %}" class="btn btn-lg btn-block btn-default">Get it done!</a>
+					<a href="{% url 'task:task_evaluation_list' %}" class="btn btn-lg btn-block btn-default">Check it out!</a>
 				</div>
 			</div>
 		</div>
@@ -43,13 +50,13 @@
 		<div class="bs-calltoaction bs-calltoaction-info">
 			<div class="row">
 				<div class="col-md-9 cta-contents">
-					<h1 class="cta-title">Admin Site &nbsp <span class="glyphicon glyphicon-cog"></span></h1>
+					<h1 class="cta-title">UCIPT Admin Site <span class="glyphicon glyphicon-cog"></span></h1>
 					<div class="cta-desc">
-						<p>Create and send new tasks. Evaluate existing task.</p>
+						<p>Go directly to the django admin site where you can view and make changes to the database.</p>
 					</div>
 				</div>
 				<div class="col-md-3 cta-button">
-					<a href="{% url 'admin_index' %}" class="btn btn-lg btn-block btn-default">Inspect</a>
+					<a href="{% url 'admin:index' %}" class="btn btn-lg btn-block btn-default">Inspect</a>
 				</div>
 			</div>
 		</div>

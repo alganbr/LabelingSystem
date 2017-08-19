@@ -630,6 +630,7 @@ div.system-message p.system-message-title {
 
 div.breadcrumbs {
     background: #79aec8;
+    margin-top: 50px;
     padding: 10px 40px;
     border: none;
     font-size: 14px;

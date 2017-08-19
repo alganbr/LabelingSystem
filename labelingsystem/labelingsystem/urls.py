@@ -20,7 +20,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic.base import RedirectView
 
-from .views import HomeView
+from .views import *
 
 admin.site.site_header = 'UCIPT Administration'
 admin.site.site_title = 'UCIPT Labeling System'
@@ -29,6 +29,7 @@ urlpatterns = [
 	url(r'^$', RedirectView.as_view(url=reverse_lazy('account:login'))),
     url(r'^admin/', admin.site.urls),
     url(r'^index/$', HomeView.as_view(), name='home'),
+    url(r'admin_index/$', AdminIndexView.as_view(), name='admin_index'),
     url(r'^account/', include('account.urls', namespace='account')),
     url(r'^task/', include('task.urls', namespace='task')),
     url(r'^quiz/', include('quiz.urls', namespace='quiz')),

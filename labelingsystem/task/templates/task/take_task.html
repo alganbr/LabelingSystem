@@ -12,6 +12,15 @@
 <script type="text/javascript" src="{% static 'task/js/take_task.js' %}"></script>
 {% endblock extrascript %}
 
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'home' %}">Home </a>
+&rsaquo;
+<a href="{% url 'task:task_list' %}">Task_list </a>
+&rsaquo; Take Task
+</div>
+{% endblock breadcrumbs %}
+
 {% block content %}
 <div class="container-fluid">
 
