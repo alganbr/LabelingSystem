@@ -147,3 +147,17 @@ MEDIA_ROOT = MEDIA_DIR
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'account:login'
+
+# Emails
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+
+# This will print emails to STDOUT (use for testing)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# This will actually send emails (uncomment when we want to actually send emails)
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

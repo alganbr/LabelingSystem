@@ -1,4 +1,5 @@
 from django import forms
+from django.core.mail import send_mail
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Fieldset, ButtonHolder, HTML, Button
@@ -129,6 +130,8 @@ class CreateTaskForm(forms.Form):
 
 	def send_email(self):
 		participating_coders = self.cleaned_data['Participating Coders']
-		coder_list = participating_coders.split('\n')
+		coder_list = participating_coders.split()
 		for coder in coder_list:
-			print(coder)
+			subject = str.format("Task created for {0}", coder)
+			message = str.format("Hi {0},\n\n\tYou have been selected to complete a task. Please start here: [WEBSITE_URL]\n\nBest,\nUCIPT Team", coder)
+			send_mail(subject, message, 'UCIPT@gmail.com', coder_list, fail_silently=False)
