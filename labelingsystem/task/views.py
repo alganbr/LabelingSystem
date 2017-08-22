@@ -136,8 +136,14 @@ class TaskEvaluationDetailView(LoginRequiredMixin, DetailView):
 			row = []
 			row.append(post.content)
 			for coder_email in self.coder_emails:
-				post_response = PostResponse.objects.get(task=self.task.pk, post=post.pk, responder__email=coder_email)
-				row.append(post_response.label)
+				label = 'N/A'
+				try:
+					post_response = PostResponse.objects.get(task=self.task.pk, post=post.pk, responder__email=coder_email)
+					label = post_response.label
+				except:
+					pass
+
+				row.append(label)
 			self.array.append(row)
 
 		try:
