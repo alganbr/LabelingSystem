@@ -22,9 +22,27 @@
 {% block content %}
 <div class="container-fluid">
 	<div class="col-sm-12">
-
-		<h1>This is task evaluation</h1>
-
+		<h1>{{ task }} Evaluation</h1>
+		<table class="table table-striped">
+			<thead>
+				<tr class="table-head">
+					<th>Post</th>
+					{% for coder_email in coder_email_list %}
+						<th>{{ coder_email }}</th>
+					{% endfor %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for row in array %}
+					<tr>
+						{% for col in row %}
+							<td>{{ col }}</td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<h1>Krippendorff's alpha: &nbsp {{ alpha }}</h1>
 	</div>
 </div>
 {% endblock content %}

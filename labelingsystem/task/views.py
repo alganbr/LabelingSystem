@@ -10,6 +10,8 @@ from response.models import PostResponse
 
 from .forms import CreateTaskForm
 
+from nltk.metrics.agreement import AnnotationTask
+
 import random
 from django.db.models import Q
 
@@ -109,7 +111,7 @@ class TaskEvaluationListView(LoginRequiredMixin, ListView):
 			self.task_list = Task.objects.filter(id__in=task_ids)
 			get_list_or_404(self.task_list)
 		except:
-			return redirect('/task/task_empty', permanent=True)
+			return redirect('/task/task_evaluation_empty', permanent=True)
 
 		return super(TaskEvaluationListView, self).dispatch(request, *args, **kwargs)
 
@@ -121,6 +123,42 @@ class TaskEvaluationListView(LoginRequiredMixin, ListView):
 		context['task_list'] = self.get_queryset()
 		return context
 
+class TaskEvaluationEmptyView(LoginRequiredMixin, TemplateView):
+    template_name = 'task/task_evaluation_empty.html'
+
 class TaskEvaluationDetailView(LoginRequiredMixin, DetailView):
 	model = Task
 	template_name = 'task/task_evaluation_detail.html'
+
+	def dispatch(self, request, *args, **kwargs):
+		self.task = get_object_or_404(Task, pk=self.kwargs['pk'])
+		self.array = []
+		self.coder_emails = PostResponse.objects.filter(task=self.task.pk).values_list('responder__email', flat=True).distinct().order_by('responder__email')
+		post_list = self.task.post_list.all()
+		for post in post_list:
+			row = []
+			row.append(post.content)
+			for coder_email in self.coder_emails:
+				post_response = PostResponse.objects.get(task=self.task.pk, post=post.pk, responder__email=coder_email)
+				row.append(post_response.label)
+			self.array.append(row)
+
+		annotation_triplet_list = []
+		post_response_list = PostResponse.objects.filter(task=self.task.pk)
+		for post_response in post_response_list:
+			annotation_triplet = (post_response.responder.email, post_response.post.content, post_response.label.content)
+			annotation_triplet_list.append(annotation_triplet)
+
+		t = AnnotationTask(annotation_triplet_list)
+		self.alpha = t.alpha()
+
+		return super(TaskEvaluationDetailView, self).dispatch(request, *args, **kwargs)
+
+	def get_context_data(self, **kwargs):
+		context = super(TaskEvaluationDetailView, self).get_context_data(**kwargs)
+		context['task'] = self.task
+		context['array'] = self.array
+		context['coder_email_list'] = self.coder_emails
+		context['alpha'] = self.alpha
+		return context
+
