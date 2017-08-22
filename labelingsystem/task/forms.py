@@ -134,4 +134,5 @@ class CreateTaskForm(forms.Form):
 		for coder in coder_list:
 			subject = str.format("Task created for {0}", coder)
 			message = str.format("Hi {0},\n\n\tYou have been selected to complete a task. Please start here: [WEBSITE_URL]\n\nBest,\nUCIPT Team", coder)
-			send_mail(subject, message, 'UCIPT@gmail.com', coder_list, fail_silently=False)
+			send_mail(subject, message, 'ucipt.labeling@gmail.com', coder_list, fail_silently=False)
+

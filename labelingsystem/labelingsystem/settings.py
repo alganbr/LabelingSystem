@@ -149,12 +149,11 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'account:login'
 
 # Emails
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = 'ucipt.labeling@gmail.com'
+EMAIL_HOST_PASSWORD = 'uciptlabelingsystem'
 
 # This will print emails to STDOUT (use for testing)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
