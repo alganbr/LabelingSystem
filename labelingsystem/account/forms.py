@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from cuser.forms import AuthenticationForm
 
 from crispy_forms.helper import FormHelper
@@ -32,4 +32,14 @@ class SignUpForm(UserCreationForm):
         super(SignUpForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Submit', css_class='btn btn-info btn-sm pull-right'))
+
+class AccountPasswordChangeForm(PasswordChangeForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AccountPasswordChangeForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'password-change-form'
+
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn btn-info btn-sm pull-right'))
