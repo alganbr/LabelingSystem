@@ -104,11 +104,8 @@ class TaskEvaluationListView(LoginRequiredMixin, ListView):
 	template_name = 'task/task_evaluation_list.html'
 
 	def dispatch(self, request, *args, **kwargs):
-		user = self.request.user
 		try:
-			task_ids = Participation.objects.filter(coder=user.email).values('task').distinct()
-			get_list_or_404(task_ids)
-			self.task_list = Task.objects.filter(id__in=task_ids)
+			self.task_list = Task.objects.filter(creator=self.request.user.pk)
 			get_list_or_404(self.task_list)
 		except:
 			return redirect('/task/task_evaluation_empty', permanent=True)
@@ -143,14 +140,17 @@ class TaskEvaluationDetailView(LoginRequiredMixin, DetailView):
 				row.append(post_response.label)
 			self.array.append(row)
 
-		annotation_triplet_list = []
-		post_response_list = PostResponse.objects.filter(task=self.task.pk)
-		for post_response in post_response_list:
-			annotation_triplet = (post_response.responder.email, post_response.post.content, post_response.label.content)
-			annotation_triplet_list.append(annotation_triplet)
+		try:
+			annotation_triplet_list = []
+			post_response_list = PostResponse.objects.filter(task=self.task.pk)
+			for post_response in post_response_list:
+				annotation_triplet = (post_response.responder.email, post_response.post.content, post_response.label.content)
+				annotation_triplet_list.append(annotation_triplet)
 
-		t = AnnotationTask(annotation_triplet_list)
-		self.alpha = t.alpha()
+			t = AnnotationTask(annotation_triplet_list)
+			self.alpha = t.alpha()
+		except:
+			self.alpha = 'N/A'
 
 		return super(TaskEvaluationDetailView, self).dispatch(request, *args, **kwargs)
 
