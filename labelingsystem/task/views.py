@@ -24,7 +24,7 @@ class TaskListView(LoginRequiredMixin, ListView):
 	def dispatch(self, request, *args, **kwargs):
 		user = self.request.user
 		try:
-			task_ids = Participation.objects.filter(coder=user.pk).values('task').distinct()
+			task_ids = Participation.objects.filter(coder=user.email).values('task').distinct()
 			get_list_or_404(task_ids)
 			self.task_list = Task.objects.filter(id__in=task_ids)
 			get_list_or_404(self.task_list)
@@ -89,12 +89,10 @@ class CreateTaskView(LoginRequiredMixin, FormView):
 		participating_coders = form.cleaned_data['Participating Coders']
 
 		prerequisite = form.create_quiz(quiz_title, quiz_description, max_posts, pass_mark, quiz_upload_file, self.request.user)
-		form.create_task(task_title, task_description, task_upload_file, self.request.user, prerequisite)
-		form.send_email()
+		task = form.create_task(task_title, task_description, task_upload_file, self.request.user, prerequisite)
+		form.send_email(task)
 
 		return super(CreateTaskView, self).form_valid(form)
-
-
 
 class CreateTaskSuccessView(LoginRequiredMixin, TemplateView):
 	template_name = 'task/create_task_success.html'
@@ -106,7 +104,7 @@ class TaskEvaluationListView(LoginRequiredMixin, ListView):
 	def dispatch(self, request, *args, **kwargs):
 		user = self.request.user
 		try:
-			task_ids = Participation.objects.filter(coder=user.pk).values('task').distinct()
+			task_ids = Participation.objects.filter(coder=user.email).values('task').distinct()
 			get_list_or_404(task_ids)
 			self.task_list = Task.objects.filter(id__in=task_ids)
 			get_list_or_404(self.task_list)

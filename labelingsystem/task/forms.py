@@ -5,7 +5,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Submit, Fieldset, ButtonHolder, HTML, Button
 from crispy_forms.bootstrap import FieldWithButtons, StrictButton
 
-from .models import Task
+from .models import Task, Participation
 from quiz.models import Quiz, AnswerKey, Answer
 from label.models import Label
 from post.models import Post
@@ -108,31 +108,44 @@ class CreateTaskForm(forms.Form):
 		return quiz_object
 
 	def create_task(self, task_title, task_description, task_upload_file, user, prerequisite):
-		task_object = Task.objects.create(
-			title = task_title,
-			description = task_description,
-			prerequisite = prerequisite,
-			creator = user)
+		try:
+			task_object = Task.objects.create(
+				title = task_title,
+				description = task_description,
+				prerequisite = prerequisite,
+				creator = user)
 
-		reader = csv.reader(TextIOWrapper(task_upload_file), delimiter='|', skipinitialspace=True)
+			reader = csv.reader(TextIOWrapper(task_upload_file), delimiter='|', skipinitialspace=True)
 
-		labels = next(reader)
-		for label in labels:
-			label_object = Label.objects.create(content=label)
-			task_object.label_list.add(label_object)
+			labels = next(reader)
+			for label in labels:
+				label_object = Label.objects.create(content=label)
+				task_object.label_list.add(label_object)
 
-		posts = reader
-		for post in posts:
-			post_object = Post.objects.create(
-				content = post[0],
-				author = user)
-			task_object.post_list.add(post_object)
+			posts = reader
+			for post in posts:
+				post_object = Post.objects.create(
+					content = post[0],
+					author = user)
+				task_object.post_list.add(post_object)
+		except:
+			return None
 
-	def send_email(self):
+		return task_object
+
+	def add_participant(self, task, coder):
+		Participation.objects.create(
+			task=task,
+			coder=coder)
+
+	def send_email(self, task):
 		participating_coders = self.cleaned_data['Participating Coders']
 		coder_list = participating_coders.split()
 		for coder in coder_list:
 			subject = str.format("Task created for {0}", coder)
 			message = str.format("Hi {0},\n\n\tYou have been selected to complete a task. Please start here: [WEBSITE_URL]\n\nBest,\nUCIPT Team", coder)
 			send_mail(subject, message, 'ucipt.labeling@gmail.com', coder_list, fail_silently=False)
+			self.add_participant(task, coder)
+
+
 

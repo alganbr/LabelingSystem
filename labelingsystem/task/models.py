@@ -64,9 +64,7 @@ class Participation(models.Model):
 		default = None,
 		verbose_name = 'task')
 
-	coder = models.ForeignKey(
-		settings.AUTH_USER_MODEL,
-		on_delete = models.CASCADE,
+	coder = models.EmailField(
 		blank = False,
 		default = None,
 		verbose_name = 'coder')
