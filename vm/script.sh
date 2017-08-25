@@ -22,6 +22,7 @@ pushd /home/vagrant/labelingsystem
 ./deletemigrations.sh
 ./makemigrations.sh
 /usr/bin/python3 manage.py migrate
+/usr/bin/python3 manage.py generate_admin_group
 popd
 
 # Give everything in home folder back to vagrant user

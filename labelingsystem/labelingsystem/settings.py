@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'cuser',
     'label',
+    'labelingsystem',
     'post',
     'quiz',
     'response',
